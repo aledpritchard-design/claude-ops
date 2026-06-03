@@ -1,0 +1,198 @@
+---
+name: linear-conventions
+description: How to create, label, route, and validate work in Aled Pritchard's Linear workspace (teams: careerOS, Apps, Pipeline, A1, Mr Pritchard). Use this skill whenever working with Aled's Linear — creating or updating tickets, filing documents, choosing teams, projects, or labels, recording decisions, or running agent work that touches Linear. Trigger it even when the user doesn't name the conventions explicitly: any time the task involves making a Linear ticket, a Linear doc, a decision-log entry, or routing work between the human and an agent, these conventions apply. Getting the team, labels, states, or validation pattern wrong creates real cleanup, so consult this first rather than guessing.
+---
+
+# Linear workspace conventions
+
+Aled runs all his work through Linear — the careerOS system, the product and app builds, the pipeline of people and opportunities, the Association of One consultancy, and his editorial output. Linear is the **system of record**: not the chat thread, not memory, not project files. If a decision, a piece of state, or a task isn't in Linear, it effectively doesn't persist. Treat Linear as canon and keep it clean, because everything downstream (outputs, the website, future agent runs) trusts it.
+
+This skill encodes the conventions so they don't have to be re-derived each session. Follow them precisely — the failure modes here are silent (a stale label, a ticket in the wrong state, a decision that never got logged) and they cost real cleanup later.
+
+## The workspace: teams and where work goes
+
+Five teams. Route to the right team first, then the right project within it.
+
+| Team | Key | What it holds |
+| -- | -- | -- |
+| **careerOS** | `COS` | The job-search and portfolio system. Projects: cOS.System (architecture, philosophy, canon), cOS.Content (truth captures `tc.*`, case studies, CV, narrative), cOS.Build (engineering, website, automation), cOS.App (AI behaviour for the portfolio product), cOS.Reporting (inbound product signals). |
+| **Apps** | `APP` | Product/app builds and cross-cutting build infrastructure. Projects: os.Claude (how Claude is operated — skills, routines, agent instructions), app.fitness, Luna MVP, bot.Trader, and the gtd.* GTD projects (Capture, Configure, Build, Health, Home, Family, MBN, CareerOS). |
+| **Pipeline** | `PIPE` | People and opportunities (see "The Pipeline model" below). Projects: Network (the people layer), Roles, Advisory, Pitches (the opportunity funnels). |
+| **A1** | `A1` | The Association of One consultancy. Projects: a1.OS (standards and playbooks — the practice's operating system), a1.Brand (A1's own identity and the client-facing document system), and one project per client engagement (a1.MeirionPritchard, a1.Heroes). |
+| **Mr Pritchard** | `MRP` | Editorial and personal brand. Projects: Articles (long-form, canon voice), Substack (short-form), LinkedIn (posts), Operations (decision log, project instructions, get-started). Editorial cascades: an Article is the parent; its Substack and LinkedIn derivatives are sub-issues. |
+
+Quick routing:
+
+* A *person* -> Pipeline / Network. An *opportunity* -> Pipeline / Roles, Advisory, or Pitches, titled for the opportunity (never the person).
+* How Claude is operated (skills, routines, agent instructions) -> Apps / os.Claude.
+* A1 client work -> the A1 team, one project per client; A1 standards and playbooks -> a1.OS.
+* Editorial -> Mr Pritchard (Articles -> Substack -> LinkedIn).
+
+> **Recent structure changes (2026-06-02):** the old `cOS.Roles` / `cOS.Outreach-*` projects were replaced by the **Pipeline** team (Roles / Network / Advisory). **A1** graduated from a careerOS project to its own team. The team formerly called *Projects* (key `ASP`) is now **Apps** (key `APP`). **Mr Pritchard** is the editorial/personal-brand team. The old careerOS projects retain only historic/cancelled entries pending archive; don't file new pipeline work there.
+
+If the right home is genuinely ambiguous, ask rather than guess. A misfiled ticket is worse than a clarifying question.
+
+## The Pipeline model — people vs opportunities
+
+The Pipeline team has two layers, and keeping them distinct is the whole point of the structure:
+
+* **People layer — `Network`.** Every contact lives here, inbound or outbound: recruiters (internal and agency), former colleagues, ex-managers, dormant ties, useful connections. The unit is a *person*. A person enters here and never moves out; the relationship persists regardless of what it produces.
+* **Opportunity layers — `Roles`, `Advisory`, `Pitches`.** These hold concrete opportunities, each titled for the *opportunity* (a role at a company, the company being advised, a piece of work) — **never for a person**. An opportunity issue is created only when something real exists.
+
+The rule: **a person never appears in an opportunity funnel, and an opportunity is never titled with a person's name.** When a relationship produces something concrete, an opportunity issue is spawned in the right funnel and *linked back* to the person in Network via a native relation. One person can throw off several opportunities over time (a role, then later advisory) — each is its own linked issue; the person stays put.
+
+This is why Advisory may look near-empty: it holds live advisory *engagements*, not advisory *leads*. Leads are people, and people are in Network.
+
+### Gmail capture labels (the `pipeline/` family)
+
+Mail is fed into the funnels by labelling threads in Gmail with the `pipeline/` prefix (renamed 2026-06-02 from `job-search/`). The sweeps read these:
+
+* `pipeline/roles` — a specific role -> swept into Roles
+* `pipeline/recruiter-internal` / `pipeline/recruiter-agency` — a recruiter -> swept into Network
+* `pipeline/network` — a general contact (colleague, dormant tie) -> swept into Network, no `opp:` unless signalled
+* `pipeline/advisory` — a person Aled reads as near an advisory opportunity -> swept into Network, stamped `opp:advisory` (the label is advisory *intent*; it does NOT route to the Advisory project)
+* `pipeline/triaged` — the processed-marker added by every sweep so threads aren't re-swept
+
+### Surfaced / graduation labels (Linear)
+
+The link between the people layer and the opportunity funnels runs on structured Linear labels, not free-text scanning:
+
+* `surfaced:role` — a concrete role opportunity has surfaced from this Network relationship
+* `surfaced:advisory` — a concrete advisory opening (named company) has surfaced
+* `surfaced:pitch` — a piece of A1 new-business / delivery work has surfaced
+* `surfaced:done` — graduated; an opportunity issue has been created and linked (prevents re-graduation)
+
+The feeding sweeps add `surfaced:role` / `surfaced:advisory` automatically when they spot a concrete opening; you add a marker by hand after a call surfaces something. The graduation routine reads these markers and creates the linked opportunity issue, then swaps the trigger label for `surfaced:done`. Routine docs: `routine.gmail-sweep-roles`, `routine.gmail-sweep-recruiters`, `routine.gmail-sweep-network`, `routine.network-graduation`.
+
+## Issue states
+
+Two workflows are in play, by team:
+
+**careerOS, Apps, A1, Mr Pritchard (engineering/kanban):** `Backlog`, `Todo`, `In Progress`, `In Review`, `Done`, `Canceled`, `Duplicate`.
+
+**Pipeline (forward-moving funnel):** `Captured`, `Backlog` (= identified, not yet actioned), `Todo`, `Awaiting` (acted, ball in their court), `Active` (live back-and-forth), `Engaged` (resolved well — engagement live / offer in hand / relationship purposeful), `Passed` (no fit / cold / withdrew), `Canceled`. Note the looser fit for Network specifically: a relationship oscillates (active <-> dormant) rather than completing, so read warmth from the labels, not the column.
+
+**The Backlog rule (both workflows):** new tickets that Aled hasn't refined go in **Backlog**, not Todo. Todo means "ready to action." Backlog means "captured, needs refinement first." When creating tickets that raise questions or need Aled's input before they're actionable, always Backlog — and include a notes section (see below). Don't move things to Todo on Aled's behalf unless he's said it's ready.
+
+## Labels
+
+Every ticket should carry the labels that classify it. The taxonomy:
+
+**Type** (what kind of work): `type:epic`, `type:feature`, `type:story`, `type:task`, `type:bug`
+
+**Executor** (who does it): either `exec:human`, or one label from the `agent` group.
+
+* `exec:human` — decisions, design, launch ops, anything human-owned.
+* `agent` **group (single-select)** — which agent owns the work. The former `exec:agent:*` and `author:claude-code` labels were retired (2026-06-02) and folded into this one group:
+  * `agent:cc-pm`, `agent:cc-exec`, `agent:cc-qa` — the three Claude Code roles in the PM -> exec -> QA loop (see *Agent routing* below)
+  * `agent:claude` — claude.ai work that needs an MCP the CLI lacks (e.g. Figma)
+  * `agent:codex`, `agent:gpt`, `agent:replit` — other agents
+* **Single-select:** an issue carries exactly one `agent:*` at a time. Setting a new one evicts the previous, so a handoff is just setting the next role — never two at once.
+
+**Workstream** (what domain): `work:product`, `work:experience`, `work:ai-behaviour`, `work:content-data`, `work:configuration`, `work:engineering`, `work:infrastructure`, `work:analytics`
+
+**Pipeline-specific** (on Network / opportunity issues):
+
+* Contact type: `contact:network`, `contact:reconnect`, `contact:loose`, `contact:recruiter-internal`, `contact:recruiter-agency`
+* Opportunity mode (what a relationship might produce): `opp:advisory`, `opp:fractional`, `opp:consulting`, `opp:fulltime` — applied only when signalled; a plain network contact may carry none until refined
+* Warmth: `warmth:warm`, `warmth:cool`, `warmth:cold`
+* Role stage (on Roles issues): `stage:applied`, `stage:screen`, `stage:interview-1`, etc.
+* Surfaced markers: `surfaced:role`, `surfaced:advisory`, `surfaced:pitch`, `surfaced:done` (see above)
+* Reporting: `reporting:contact`
+
+A typical engineering ticket carries one `type:`, one `work:`, and either `exec:human` or one `agent:*`. A Network contact carries a `contact:*`, `reporting:contact`, `type:task`, and an `opp:*` only where a mode is known.
+
+Note: `author:*` (`author:aled`, `author:codex`, etc.) marks who *created* something. The agent execution axis is the `agent` group above. (`author:claude-code` and all `exec:agent:*` labels were retired on 2026-06-02 — `agent:cc-*` now carries Claude Code routing.)
+
+## Agent routing — the cc-pm / cc-exec / cc-qa loop
+
+Claude Code work runs as a loop across three roles, routed by the single-select `agent` label and driven by polling Cloud Routines. There is no Linear agent app user — `@claude-code` is a label, not a user, so triggering is by label, not by agent session. **Aled is the gate; nothing merges without his approval.**
+
+* `agent:cc-pm` — triage and project management. Reads the issue and comments, sets status / priority / links, decides whether it needs execution. If it does, sets `agent:cc-exec` and moves to Todo (never Backlog), with a comment stating what's needed and the acceptance criteria. Where a human decision is required, leaves it clearly for Aled. Suggest-mode first (proposes moves as comments) until trusted.
+* `agent:cc-exec` — execution. Claims the ticket by moving it to In Progress (a ticket in In Progress under `agent:cc-exec` is being worked and is never re-grabbed — status is the lock; no separate lock label). Runs Claude Code against the connected repo, opens a PR (never merges), then sets `agent:cc-qa` and moves the ticket to In Review.
+* `agent:cc-qa` — review. Reads the PR against the criteria embedded in the ticket (Pattern A) and writes a plain-language summary Aled can act on without reading code: if clean, what was done plus confirmation it meets the DoD; if changes are needed, everything the exec agent needs to act on. Does not merge and does not move the ticket forward.
+
+Aled approves (and merges, or tells the exec agent to) or bounces: **In Review -> Todo with a note** re-triggers the exec agent on the same ticket. This is Pattern A (below) with a QA write-up added — review stays a state transition Aled owns, not a separate ticket.
+
+Concurrency: the exec leg only picks up `agent:cc-exec` tickets in **Todo**, and skips its run if any `agent:cc-exec` ticket is already In Progress (one Claude Code agent per repo). Todo = ready, In Progress = running. No separate lock label is required.
+
+Scope: the loop runs across delivery projects only. It must never touch the Pipeline team (Network / Roles / Advisory / Pitches) — that's relationship and business-development work, not delivery.
+
+## Pattern A — folded validation (the core working discipline)
+
+This is how build/agent work is validated, and it's non-negotiable:
+
+**Review criteria live inside the build ticket as a checklist. There are no separate review tickets.**
+
+When an agent finishes a ticket:
+
+1. It checks its work against the criteria embedded in the ticket body.
+2. It moves the ticket to **In Review** and **reassigns it to Aled**.
+3. It does **NOT** mark the ticket **Done**. Sign-off is human, always.
+
+Aled reviews against the embedded criteria and moves it to Done himself. This keeps the human queue showing only actionable work — review is a state transition, not a separate piece of work. When writing a ticket an agent will execute, embed the acceptance criteria in the body so this works.
+
+## When creating tickets — the standard shape
+
+A well-formed ticket Aled hasn't yet refined contains:
+
+* **Title** — action-prefixed and specific, e.g. `PROPOSAL: ...`, `CASE STUDY (short): ...`, `SCOPE: ...`, `DRIFT: ...`. Prefix signals the kind of work at a glance. (Pipeline issues follow their own title rules: Network -> `[Name] — [Company]`; opportunity funnels -> titled for the opportunity, never the person.)
+* **Objective** — one or two sentences on what this ticket is for.
+* **Why this matters** — brief context, especially how it connects to other work.
+* **Body** — the substance; for agent tickets, embed acceptance criteria here (Pattern A).
+* **Notes for Aled to address** — when the brief isn't fully defined, list the open questions/decisions explicitly. This is what makes a Backlog ticket refinable rather than vague.
+* **On completion** — usually "refine with the answers above, then move to Todo."
+
+Set **assignee** (default Aled for human/refinement tickets), **state** (Backlog unless told otherwise), **priority** (`Urgent`/`High`/`Medium`/`Low`/`None` -> 1/2/3/4/0), and **labels** per the taxonomy.
+
+Issue numbers are auto-assigned by Linear (each team has its own key — COS, APP, PIPE, A1, MRP) — never invent them.
+
+## Documents and the decision log
+
+**Filing a document:** use the document tool (create/update), set `title` and the parent `project`. Documents hold canon (specs, patterns, truth captures, playbooks, prompts). One doc per artefact. Type-prefix the title: `skill.` (reusable procedure), `routine.` (scheduled automation), `task.` (one-off).
+
+**The decision log** (`build.log-decisions`, in cOS.Build) records every architectural/scope decision. Newest entries at the top. Each entry uses this template:
+
+```
+### YYYY-MM-DD — [Decision title]
+Decision: What was decided
+Context: What was happening / what triggered it
+Why: Reasoning. Options considered briefly where relevant.
+Impact: What changes downstream
+Status: Active / Superseded by [X]
+```
+
+When you make or help make a consequential decision, add an entry. When a logged decision is later resolved or reversed, update its entry rather than leaving a stale one.
+
+## Canon and source-of-truth discipline
+
+* **Linear is canon.** Project MD files, the website, and synced skill copies are all *derived from* Linear. When they disagree, Linear wins (or Linear needs updating — but the file never silently becomes the source).
+* **Never edit canon silently on Aled's behalf when the change is consequential.** Detecting drift or proposing a change -> raise a ticket assigned to Aled. Canon changes are human-owned. (Mechanical, agreed updates are fine; judgement calls are not.)
+* **Don't fabricate or infer.** If a fact is missing, flag the gap rather than fill it. For anything describing real work, the truth captures (`tc.*`) are authoritative — fetch the source, don't rely on memory of a past session.
+* **Keep the layers distinct.** Career narrative/arc (`cos.narrative`, `cos.operating-model`), transformation patterns (`cos.transformation-patterns`), and evidence (`tc.*`) are separate layers. Don't collapse them.
+
+## The three execution lanes
+
+Work runs in three parallel lanes that must not collide:
+
+1. **Claude Code in the repo** — one agent at a time per repo (git conflicts otherwise); tickets run serially in priority order.
+2. **Aled in content/design surfaces** — runs in parallel (different surfaces, no conflict).
+3. **claude.ai for spec/Figma/content** — runs alongside both (separate session, MCP-dependent work).
+
+When sequencing tickets, mark sequential dependencies explicitly (one Claude Code ticket blocks the next); mark what can run in parallel. Don't queue two Claude Code tickets as simultaneously actionable.
+
+## Tone for ticket and doc content
+
+Aled's tone of voice applies to everything written into Linear: calm, precise, structurally confident. Sentence case. No exclamation marks. No marketing-speak. Outcome before adjective. British spelling. (Full reference: `cos.tov`.)
+
+## Quick checklist before creating or updating anything
+
+- [ ] Right team and project? (Pipeline for people/opportunities; A1 for the consultancy; Mr Pritchard for editorial; careerOS for the system; Apps for builds.)
+- [ ] Person -> Network; opportunity -> Roles/Advisory/Pitches titled for the opportunity, linked back?
+- [ ] Backlog (not Todo) if Aled hasn't refined it?
+- [ ] Correct label set? (engineering: one `type:`/`work:`, plus `exec:human` or one `agent:*`; Pipeline: `contact:`/`reporting:contact`/`type:task`, `opp:` only where known)
+- [ ] Assignee set (Aled for human/refinement work)?
+- [ ] For agent tickets: acceptance criteria embedded in the body (Pattern A)?
+- [ ] Notes section listing open questions, if the brief isn't fully defined?
+- [ ] Consequential decision made? -> decision-log entry added.
+- [ ] Tone clean per `cos.tov`?
