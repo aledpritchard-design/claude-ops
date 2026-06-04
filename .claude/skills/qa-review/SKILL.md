@@ -13,10 +13,16 @@ Poll for issues in In Review carrying `cc-qa` (set by the exec leg). Delivery pr
 
 ## Behaviour
 
-Read the linked PR / diff and the acceptance criteria embedded in the ticket (Pattern A). Assess the change against those criteria, then post a comment in one of two modes:
+Read the linked PR / diff and the acceptance criteria embedded in the ticket (Pattern A). Assess the change against those criteria, then:
+
+1. **Post the verdict comment on the Linear ticket** (so it's in the canonical record).
+2. **Post the same verdict comment on the GitHub PR** (so it's visible where Aled reviews and approves).
+3. **Mark the PR as Ready for Review** (convert from draft) — draft signals WIP; a clean QA pass signals it's awaiting human sign-off.
+
+Verdict comes in one of two modes:
 
 - **Clean** — a summary of what was done plus explicit confirmation it meets the DoD / success criteria. Enough for Aled to approve.
-- **Changes needed** — log everything the exec agent needs to act on: specific, actionable, with file/line where it helps, so a bounce is self-contained.
+- **Changes needed** — log everything the exec agent needs to act on: specific, actionable, with file/line where it helps, so a bounce is self-contained. Do not mark the PR ready for review if changes are needed.
 
 Plain language throughout — Aled acts on it without reading the code.
 
@@ -29,5 +35,5 @@ Plain language throughout — Aled acts on it without reading the code.
 ## Setup
 
 - Claude Code Desktop -> Schedule -> New remote task.
-- Connectors: Linear + GitHub (read access to the PR; no write).
+- Connectors: Linear + GitHub (read + write access to the PR for comments and draft conversion).
 - Routine prompt: "Run the qa-review skill."
