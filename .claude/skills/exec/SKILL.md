@@ -1,6 +1,6 @@
 ---
 name: exec
-description: Execute a Claude Code ticket end to end and open a pull request for review, on behalf of the cc-exec role. Use this whenever running the exec routine, or when a ticket carries agent:cc-exec in Todo and no other cc-exec ticket is In Progress — run the work against the connected repo, open a PR (never merge), then hand off to cc-qa and In Review. Apply this so the lock, handoff, blocked, and gate discipline stay consistent. Trigger it whenever the task is to implement, build, or fix a Linear-tracked ticket with Claude Code.
+description: Execute a Claude Code ticket end to end and open a pull request for review, on behalf of the cc-exec role. Use this whenever running the exec routine, or when a ticket carries the label cc-exec in Todo and no other cc-exec ticket is In Progress — run the work against the connected repo, open a PR (never merge), then hand off to cc-qa and In Review. Apply this so the lock, handoff, blocked, and gate discipline stay consistent. Trigger it whenever the task is to implement, build, or fix a Linear-tracked ticket with Claude Code.
 ---
 
 # exec
@@ -9,7 +9,7 @@ The execution role of the Claude Code loop. Runs as a polling Cloud Routine agai
 
 ## Trigger
 
-Poll for issues carrying `agent:cc-exec` in **Todo**, delivery projects only — never the Pipeline team. Skip the run if any `agent:cc-exec` ticket is already **In Progress** (one Claude Code agent per repo; tickets run serially). Note: the label is stored as `cc-exec` inside the `agent` group — resolve it by that name, not the literal string `agent:cc-exec`.
+Poll for issues carrying label `cc-exec` in **Todo**, delivery projects only — never the Pipeline team. Skip the run if any ticket carrying label `cc-exec` is already **In Progress** (one Claude Code agent per repo; tickets run serially).
 
 ## Behaviour
 

@@ -43,7 +43,12 @@ For each qualifying ticket:
    - Evict `agent:cc-pm` (remove the label).
    - Add a comment: "Merged: PR #[number] squash-merged into main. Branch deleted. ✓"
 
-4. **Blocked path — CI failure or conflict.**
+4. **Unblock dependents.** After a successful merge, query for tickets in **Blocked** that list the just-merged ticket as a blocker. For each:
+   - Check whether any other blockers remain unresolved (i.e. not Done).
+   - If no remaining blockers, move the ticket to **Todo** and comment: "Unblocked — [ticket identifier] has merged."
+   - If other blockers remain, leave the ticket in Blocked (do not comment).
+
+5. **Blocked path — CI failure or conflict.**
    If required CI checks are failing, checks are still running, or there is a merge conflict:
    - Move the ticket to **Blocked**.
    - Set priority **1 (Urgent)**.
