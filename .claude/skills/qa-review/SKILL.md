@@ -1,6 +1,6 @@
 ---
 name: qa-review
-description: Review a Claude Code pull request for Aled and write a plain-language verdict he can act on without reading the code. Use this whenever running the qa-review routine, or when a ticket in In Review carries agent:cc-qa — read the PR against the ticket's embedded acceptance criteria and report either a clean summary with DoD confirmation, or the full set of changes the exec agent needs. Apply this rather than reviewing ad hoc; it never merges or advances the ticket. Trigger it whenever the task is to QA, review, or sanity-check agent-written code in a Linear context.
+description: Review a Claude Code pull request for Aled and write a plain-language verdict he can act on without reading the code. Use this whenever running the qa-review routine, or when a ticket in In Review carries cc-qa — read the PR against the ticket's embedded acceptance criteria and report either a clean summary with DoD confirmation, or the full set of changes the exec agent needs. Apply this rather than reviewing ad hoc; it never merges or advances the ticket. Trigger it whenever the task is to QA, review, or sanity-check agent-written code in a Linear context.
 ---
 
 # qa-review
@@ -9,7 +9,7 @@ The QA / review role of the Claude Code loop — the extra pair of eyes that mak
 
 ## Trigger
 
-Poll for issues in In Review carrying `agent:cc-qa` (set by the exec leg). Delivery projects only.
+Poll for issues in In Review carrying `cc-qa` (set by the exec leg). Delivery projects only.
 
 ## Behaviour
 
