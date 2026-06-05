@@ -26,11 +26,11 @@ Verdict comes in one of two modes:
 
 Plain language throughout — Aled acts on it without reading the code.
 
-**Hand off to Aled's gate.** Once the verdict is posted (either mode), assign the ticket to **Aled** and set `agent:cc-pm` (single-select, evicts `agent:cc-qa`), leaving it in **In Review**. Review is done, so the ticket is now genuinely Aled's: he approves (his `@cc-pm` signal triggers the pm-merge leg) or bounces (In Review → Todo re-triggers exec). The exec leg left the ticket unassigned; cc-qa is where the assignee becomes Aled, so "assigned to Aled" reliably means his decision is needed now.
+**Hand off to Aled.** Once the verdict is posted (either mode), assign the ticket to **Aled**, leaving the label as `agent:cc-qa` and the state **In Review**. Do **not** switch the label to `agent:cc-pm` — that is Aled's approval action, not QA's, and the ticket stays in the QA lane in case he has follow-ups. Review is done, so the ticket is now genuinely Aled's: he either raises follow-ups (a bounce — In Review → Todo re-triggers exec) or approves by setting `agent:cc-pm` and giving his `@cc-pm` signal, which triggers the pm-merge leg. The exec leg left the ticket unassigned; cc-qa is where the assignee becomes Aled, so "assigned to Aled" reliably means his decision is needed now.
 
 ## Guardrails
 
-- Does not merge and does not change the ticket's **state** — it stays in In Review. The one allowed transition is the handoff above: assign Aled and swap `agent:cc-qa` → `agent:cc-pm` once the verdict is posted. It reviews, reports, and hands to Aled's gate; Aled decides.
+- Does not merge, does not change the ticket's **state** (stays In Review), and does not change the `agent:*` label (stays `cc-qa`). The one thing it sets is the **assignee → Aled** once the verdict is posted. Switching to `agent:cc-pm` is Aled's approval action, not QA's. It reviews, reports, and hands to Aled; Aled decides.
 - Approve and merge are Aled's: his `@cc-pm` approval signal triggers the pm-merge leg. Bounce is Aled's: In Review -> Todo with a note re-triggers exec.
 - A QA pass is not assurance — it makes the change legible, it does not sign it off. Sign-off is human (Pattern A).
 
