@@ -13,16 +13,16 @@ Poll for issues carrying label `cc-exec` in **Todo**, delivery projects only —
 
 **Eligibility scan.** Before claiming, scan candidates from highest priority downward:
 
-- A ticket is **eligible** if it has no open blocked-by relation (blocker ticket not Done or Canceled) and no unmet dependency named in a PM comment.
+- A ticket is **eligible** if it is a **leaf ticket** (never `type:epic` — epics are outcomes, closed by Aled when their children are done; see linear-conventions *Structure*), has no open blocked-by relation (blocker ticket not Done or Canceled), and has no unmet dependency named in a PM comment.
 - If the top ticket is ineligible, move down the priority list rather than ending the run.
 - If no eligible ticket exists, end the run cleanly with no claim. Do not mark anything Blocked.
 
 ## Behaviour
 
-1. **Claim** — select the highest-priority eligible ticket and move it to In Progress. This *is* the lock: a ticket In Progress under `agent:cc-exec` is being worked and is never re-grabbed. No separate lock label.
+1. **Claim** — select the highest-priority eligible ticket, move it to In Progress, and **clear the assignee**. This *is* the lock: a ticket In Progress under `agent:cc-exec` is being worked and is never re-grabbed. No separate lock label.
 2. Read the ticket, its embedded acceptance criteria (Pattern A), any PM comment, and — if this is a bounce — Aled's note.
 3. Run Claude Code. Open a PR on a `claude/`-prefixed branch. Never merge.
-4. **Hand off** — set `agent:cc-qa` (evicts `agent:cc-exec`), move to In Review, comment the PR link and a short summary.
+4. **Hand off** — set `agent:cc-qa` (evicts `agent:cc-exec`), move to In Review, **reassign Aled** (Pattern A requires the human gate to own the ticket at review), and comment the PR link and a short summary.
 5. Leave a comment for the PM leg where project management is needed.
 
 **Blocked (fail-safe).** If you hit a blocker you cannot resolve — push rejected / no write access, a missing dependency or credential, or a requirement too ambiguous to act on safely — do **not** leave the ticket In Progress and do **not** open a half-baked PR. Move it to **Blocked**, set `exec:human` (evicts `agent:cc-exec`), assign Aled, and comment plainly what blocked you and what is needed to clear it. This empties In Progress so the leg is not jammed and the next ticket can run, and it surfaces the blocker to Aled. Aled clears the blocker and moves the ticket back to Todo to retry.

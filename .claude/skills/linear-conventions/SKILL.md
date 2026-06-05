@@ -70,11 +70,15 @@ The feeding sweeps add `surfaced:role` / `surfaced:advisory` automatically when 
 
 Two workflows are in play, by team:
 
-**careerOS, Apps, A1, Mr Pritchard (engineering/kanban):** `Backlog`, `Todo`, `In Progress`, `In Review`, `Done`, `Canceled`, `Duplicate`.
+**careerOS, Apps, A1, Mr Pritchard (engineering/kanban):** `Backlog`, `Refinement`, `Todo`, `In Progress`, `In Review`, `Blocked`, `Done`, `Canceled`, `Duplicate`.
 
 **Pipeline (forward-moving funnel):** `Captured`, `Backlog` (= identified, not yet actioned), `Todo`, `Awaiting` (acted, ball in their court), `Active` (live back-and-forth), `Engaged` (resolved well — engagement live / offer in hand / relationship purposeful), `Passed` (no fit / cold / withdrew), `Canceled`. Note the looser fit for Network specifically: a relationship oscillates (active <-> dormant) rather than completing, so read warmth from the labels, not the column.
 
 **The Backlog rule (both workflows):** new tickets that Aled hasn't refined go in **Backlog**, not Todo. Todo means "ready to action." Backlog means "captured, needs refinement first." When creating tickets that raise questions or need Aled's input before they're actionable, always Backlog — and include a notes section (see below). Don't move things to Todo on Aled's behalf unless he's said it's ready.
+
+**Refinement — Aled's lane.** Refinement holds tickets that have been refined and are parked awaiting his promotion to Todo (or his answer to an open question). It is the human refinement gate. Agents treat Refinement tickets as **read-only**: never re-refine, relabel, or re-route them — with one exception. A ticket where Aled has commented since the last pm/agent comment is a signal to act: the pm leg processes those comments as trusted instructions (applies his answers to the body, replies to confirm, promotes to Todo when he says ready, and clears the assignee once the ask is resolved). See *pm-triage* for the comment-sweep behaviour. A no-gap refined ticket parks here **unassigned**; a ticket carrying a genuine question for Aled is assigned to him (see the assignee rule under *Structure*).
+
+**Blocked.** Set by the exec leg when it hits an unresolvable blocker mid-run (no write access, a missing dependency or credential, a requirement too ambiguous to act on safely). The ticket leaves In Progress so the leg is not jammed, carries `exec:human`, and is assigned to Aled. He clears the blocker and moves it back to Todo to retry. Not the same as a blocked-by relation (a genuine dependency between tickets — see *Structure*).
 
 ## Labels
 
@@ -134,6 +138,15 @@ When an agent finishes a ticket:
 
 Aled reviews against the embedded criteria and moves it to Done himself. This keeps the human queue showing only actionable work — review is a state transition, not a separate piece of work. When writing a ticket an agent will execute, embed the acceptance criteria in the body so this works.
 
+## Structure: hierarchy, milestones, blocks
+
+Three orthogonal axes carry how work is organised. Keep them distinct — conflating them is what makes the board hard to read.
+
+* **Hierarchy = grouping.** `type:epic` is an outcome, carried as a parent issue. Epics never carry `agent:cc-exec`, are never claimed by the exec leg, and are closed only by Aled when their children are done. `type:feature` / `type:story` are capability slices under an epic — parents of tasks where the work is multi-step. `type:task` is the executable unit. **The exec leg only ever claims leaf tickets, never an epic.**
+* **Milestones = ordering.** Milestones are the phases within a project (the pattern: app.fitness M1–M6, os.Claude M1–M3). Strategic sequence — platform order, phase order, "do this before that" — lives in milestones and in Aled's promotion to Todo, never in blocks. Every refined leaf ticket gets a milestone where the project has them.
+* **Blocks = genuine dependency only.** A blocked-by relation means the work technically cannot start until the blocker is Done or Canceled (shared files that would conflict, an artefact that must exist first, a decision that gates scope). Never use a block to express sequencing preference — that is what milestones are for. Unchanged from the blocker discipline below; see *The three execution lanes → Blocker discipline*.
+* **Assignee = a human action is needed.** Assign Aled to a ticket only when it carries a genuine question, decision, or verification that is his to make. Never assign him merely as the gate — the states (Refinement, In Review) already carry the gate, and a blanket-assigned queue makes "assigned to Aled" meaningless as a signal. Any comment that assigns Aled must @mention him (`@aledpritchard`) and lead with the specific action or decision needed, phrased so he can reply or act directly.
+
 ## When creating tickets — the standard shape
 
 A well-formed ticket Aled hasn't yet refined contains:
@@ -145,7 +158,7 @@ A well-formed ticket Aled hasn't yet refined contains:
 * **Notes for Aled to address** — when the brief isn't fully defined, list the open questions/decisions explicitly. This is what makes a Backlog ticket refinable rather than vague.
 * **On completion** — usually "refine with the answers above, then move to Todo."
 
-Set **assignee** (default Aled for human/refinement tickets), **state** (Backlog unless told otherwise), **priority** (`Urgent`/`High`/`Medium`/`Low`/`None` -> 1/2/3/4/0), and **labels** per the taxonomy.
+Set **assignee** (Aled only when the ticket carries a genuine question or decision for him — see the assignee rule under *Structure*; otherwise leave it unassigned), **state** (Backlog unless told otherwise), **priority** (`Urgent`/`High`/`Medium`/`Low`/`None` -> 1/2/3/4/0), and **labels** per the taxonomy.
 
 Issue numbers are auto-assigned by Linear (each team has its own key — COS, APP, PIPE, A1, MRP) — never invent them.
 
@@ -196,7 +209,8 @@ Aled's tone of voice applies to everything written into Linear: calm, precise, s
 - [ ] Person -> Network; opportunity -> Roles/Advisory/Pitches titled for the opportunity, linked back?
 - [ ] Backlog (not Todo) if Aled hasn't refined it?
 - [ ] Correct label set? (engineering: one `type:`/`work:`, plus `exec:human` or one `agent:*`; Pipeline: `contact:`/`reporting:contact`/`type:task`, `opp:` only where known)
-- [ ] Assignee set (Aled for human/refinement work)?
+- [ ] Assignee — Aled only where a genuine human action (question, decision, verification) is needed, not as a blanket gate?
+- [ ] Hierarchy and milestone set? (Leaf ticket under the right epic/feature; milestone assigned where the project has them. Epics never carry `agent:cc-exec`.)
 - [ ] For agent tickets: acceptance criteria embedded in the body (Pattern A)?
 - [ ] Notes section listing open questions, if the brief isn't fully defined?
 - [ ] Consequential decision made? -> decision-log entry added.
