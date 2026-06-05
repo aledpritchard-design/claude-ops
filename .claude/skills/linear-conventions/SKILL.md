@@ -3,6 +3,8 @@ name: linear-conventions
 description: How to create, label, route, and validate work in Aled Pritchard's Linear workspace (teams: careerOS, Apps, Pipeline, A1, Mr Pritchard). Use this skill whenever working with Aled's Linear — creating or updating tickets, filing documents, choosing teams, projects, or labels, recording decisions, or running agent work that touches Linear. Trigger it even when the user doesn't name the conventions explicitly: any time the task involves making a Linear ticket, a Linear doc, a decision-log entry, or routing work between the human and an agent, these conventions apply. Getting the team, labels, states, or validation pattern wrong creates real cleanup, so consult this first rather than guessing.
 ---
 
+> *This is the canonical copy of this skill. The corresponding Linear doc (*`skill.linear-conventions`*) is a reference copy. Edit here; re-sync to Linear after changes.*
+
 # Linear workspace conventions
 
 Aled runs all his work through Linear — the careerOS system, the product and app builds, the pipeline of people and opportunities, the Association of One consultancy, and his editorial output. Linear is the **system of record**: not the chat thread, not memory, not project files. If a decision, a piece of state, or a task isn't in Linear, it effectively doesn't persist. Treat Linear as canon and keep it clean, because everything downstream (outputs, the website, future agent runs) trusts it.
@@ -16,7 +18,7 @@ Five teams. Route to the right team first, then the right project within it.
 | Team | Key | What it holds |
 | -- | -- | -- |
 | **careerOS** | `COS` | The job-search and portfolio system. Projects: cOS.System (architecture, philosophy, canon), cOS.Content (truth captures `tc.*`, case studies, CV, narrative), cOS.Build (engineering, website, automation), cOS.App (AI behaviour for the portfolio product), cOS.Reporting (inbound product signals). |
-| **Apps** | `APP` | Product/app builds and cross-cutting build infrastructure. Projects: os.Claude (how Claude is operated — skills, routines, agent instructions), app.fitness, Luna MVP, bot.Trader, and the gtd.* GTD projects (Capture, Configure, Build, Health, Home, Family, MBN, CareerOS). |
+| **Apps** | `APP` | Product/app builds and cross-cutting build infrastructure. Projects: os.Claude (how Claude is operated — skills, routines, agent instructions), app.fitness, Luna MVP, bot.Trader, and the gtd.\* GTD projects (Capture, Configure, Build, Health, Home, Family, MBN, CareerOS). |
 | **Pipeline** | `PIPE` | People and opportunities (see "The Pipeline model" below). Projects: Network (the people layer), Roles, Advisory, Pitches (the opportunity funnels). |
 | **A1** | `A1` | The Association of One consultancy. Projects: a1.OS (standards and playbooks — the practice's operating system), a1.Brand (A1's own identity and the client-facing document system), and one project per client engagement (a1.MeirionPritchard, a1.Heroes). |
 | **Mr Pritchard** | `MRP` | Editorial and personal brand. Projects: Articles (long-form, canon voice), Substack (short-form), LinkedIn (posts), Operations (decision log, project instructions, get-started). Editorial cascades: an Article is the parent; its Substack and LinkedIn derivatives are sub-issues. |
@@ -166,7 +168,8 @@ When you make or help make a consequential decision, add an entry. When a logged
 
 ## Canon and source-of-truth discipline
 
-* **Linear is canon.** Project MD files, the website, and synced skill copies are all *derived from* Linear. When they disagree, Linear wins (or Linear needs updating — but the file never silently becomes the source).
+* **Linear is canon — with one scoped exception.** Project MD files, the website, and synced copies are *derived from* Linear. When they disagree, Linear wins (or Linear needs updating — but the file never silently becomes the source).
+* **Exception (2026-06-05): skill, task/routine, and agent artefact content.** The `aledpritchard-design/claude-ops` GitHub repo is the source of truth for these artefacts. Author and edit them in the repo; [agents.aledpritchard.com](http://agents.aledpritchard.com) builds from the repo, and the rendered site is the review surface. Maintaining the same content in claude.ai, GitHub, and Linear was three copies of one artefact — the repo collapses that to one. Linear keeps the tickets and decision log *about* the artefacts; the os.Claude artefact docs are reference copies, not the source. (Decision: osclaude.log-decisions, 2026-06-05.)
 * **Never edit canon silently on Aled's behalf when the change is consequential.** Detecting drift or proposing a change -> raise a ticket assigned to Aled. Canon changes are human-owned. (Mechanical, agreed updates are fine; judgement calls are not.)
 * **Don't fabricate or infer.** If a fact is missing, flag the gap rather than fill it. For anything describing real work, the truth captures (`tc.*`) are authoritative — fetch the source, don't rely on memory of a past session.
 * **Keep the layers distinct.** Career narrative/arc (`cos.narrative`, `cos.operating-model`), transformation patterns (`cos.transformation-patterns`), and evidence (`tc.*`) are separate layers. Don't collapse them.
@@ -197,4 +200,5 @@ Aled's tone of voice applies to everything written into Linear: calm, precise, s
 - [ ] For agent tickets: acceptance criteria embedded in the body (Pattern A)?
 - [ ] Notes section listing open questions, if the brief isn't fully defined?
 - [ ] Consequential decision made? -> decision-log entry added.
+- [ ] Skill/task/agent artefact content? -> edit it in `claude-ops`, not the Linear reference copy.
 - [ ] Tone clean per `cos.tov`?
