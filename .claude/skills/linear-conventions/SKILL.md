@@ -181,6 +181,8 @@ Work runs in three parallel lanes that must not collide:
 
 When sequencing tickets, mark sequential dependencies explicitly (one Claude Code ticket blocks the next); mark what can run in parallel. Don't queue two Claude Code tickets as simultaneously actionable.
 
+**Blocker discipline.** Blocked-by relations are for genuine dependencies only: shared files that would conflict, artefacts that must exist first (assets, builds, merged tooling), or decisions that gate scope. Strategic sequencing — platform order, milestone order, "do this before that" — is carried by project milestones and Aled's promotion to Todo, not by blocks. Never add a blocked-by relation merely because tickets are thematically sequential. The exec leg skips ineligible (blocked) tickets rather than stalling; a spurious block silently delays delivery.
+
 ## Tone for ticket and doc content
 
 Aled's tone of voice applies to everything written into Linear: calm, precise, structurally confident. Sentence case. No exclamation marks. No marketing-speak. Outcome before adjective. British spelling. (Full reference: `cos.tov`.)
