@@ -28,6 +28,8 @@ Read the issue and its comments, then:
 - Consequential or ambiguous calls go to Aled, never a guess.
 - Canon changes (editing linear-conventions etc.) are never made here — raise a ticket instead.
 
+**Blocker discipline.** Blocked-by relations are for genuine dependencies only: shared files that would conflict, artefacts that must exist first (assets, builds, merged tooling), or decisions that gate scope. Strategic sequencing — platform order, milestone order, "do this before that" — is carried by project milestones and Aled's promotion to Todo. Never encode sequencing preferences as blocks. Do not add a blocked-by relation merely because tickets are thematically sequential or because one would logically follow the other.
+
 ## Setup
 
 - Claude Code Desktop -> Schedule -> New remote task. Cadence: a few times a day (mind the ~1h floor).

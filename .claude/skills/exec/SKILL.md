@@ -11,9 +11,15 @@ The execution role of the Claude Code loop. Runs as a polling Cloud Routine agai
 
 Poll for issues carrying label `cc-exec` in **Todo**, delivery projects only — never the Pipeline team. Skip the run if any ticket carrying label `cc-exec` is already **In Progress** (one Claude Code agent per repo; tickets run serially).
 
+**Eligibility scan.** Before claiming, scan candidates from highest priority downward:
+
+- A ticket is **eligible** if it has no open blocked-by relation (blocker ticket not Done or Canceled) and no unmet dependency named in a PM comment.
+- If the top ticket is ineligible, move down the priority list rather than ending the run.
+- If no eligible ticket exists, end the run cleanly with no claim. Do not mark anything Blocked.
+
 ## Behaviour
 
-1. **Claim** — move the chosen ticket (highest priority first) to In Progress. This *is* the lock: a ticket In Progress under `agent:cc-exec` is being worked and is never re-grabbed. No separate lock label.
+1. **Claim** — select the highest-priority eligible ticket and move it to In Progress. This *is* the lock: a ticket In Progress under `agent:cc-exec` is being worked and is never re-grabbed. No separate lock label.
 2. Read the ticket, its embedded acceptance criteria (Pattern A), any PM comment, and — if this is a bounce — Aled's note.
 3. Run Claude Code. Open a PR on a `claude/`-prefixed branch. Never merge.
 4. **Hand off** — set `agent:cc-qa` (evicts `agent:cc-exec`), move to In Review, comment the PR link and a short summary.
