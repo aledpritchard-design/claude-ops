@@ -26,10 +26,12 @@ Verdict comes in one of two modes:
 
 Plain language throughout — Aled acts on it without reading the code.
 
+**Hand off to Aled.** Once the verdict is posted (either mode), assign the ticket to **Aled**, leaving the label as `agent:cc-qa` and the state **In Review**. Do **not** switch the label to `agent:cc-pm` — that is Aled's approval action, not QA's, and the ticket stays in the QA lane in case he has follow-ups. Review is done, so the ticket is now genuinely Aled's: he either raises follow-ups (a bounce — In Review → Todo re-triggers exec) or approves by setting `agent:cc-pm` and giving his `@cc-pm` signal, which triggers the pm-merge leg. The exec leg left the ticket unassigned; cc-qa is where the assignee becomes Aled, so "assigned to Aled" reliably means his decision is needed now.
+
 ## Guardrails
 
-- Does not merge. Does not move the ticket forward or change the `agent:*` label. It reviews and reports; Aled decides.
-- Approve and merge are Aled's (he can merge, or tell the exec agent to). Bounce is Aled's: In Review -> Todo with a note re-triggers exec.
+- Does not merge, does not change the ticket's **state** (stays In Review), and does not change the `agent:*` label (stays `cc-qa`). The one thing it sets is the **assignee → Aled** once the verdict is posted. Switching to `agent:cc-pm` is Aled's approval action, not QA's. It reviews, reports, and hands to Aled; Aled decides.
+- Approve and merge are Aled's: his `@cc-pm` approval signal triggers the pm-merge leg. Bounce is Aled's: In Review -> Todo with a note re-triggers exec.
 - A QA pass is not assurance — it makes the change legible, it does not sign it off. Sign-off is human (Pattern A).
 
 ## Setup
