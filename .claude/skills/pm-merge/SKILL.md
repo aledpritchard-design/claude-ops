@@ -17,6 +17,8 @@ label change to `agent:cc-pm` plus an @cc-pm comment is the gate signal. Runs as
   and has delegated the physical merge. This is the approval signal — do not merge without it.
 - Never touches Pipeline team tickets.
 - Repos: clones `claude-ops` (for skill loading) + the delivery repo(s) for GitHub writes.
+  `claude-ops` is also a permitted **merge target** when the PR originates from an **os.Claude
+  (Apps team) delivery ticket** carrying a valid cc-pm approval signal.
 
 ## Trigger
 
@@ -64,7 +66,9 @@ For each qualifying ticket:
 
 - Never merges without the cc-pm approval signal.
 - Never force-merges — Blocked path applies every time CI or conflicts block.
-- Squash only. Done is final. Delivery repos only. Never touches Pipeline or claude-ops itself.
+- Squash only. Done is final. Delivery repos only. `claude-ops` is additionally permitted as a
+  merge target for os.Claude (Apps) delivery tickets on the cc-pm approval signal.
+  Never touches Pipeline. Never merges `claude-ops` PRs without a valid cc-pm approval signal.
 - Fresh session each run. All state lives in Linear and GitHub, not the agent.
 
 ## Setup
