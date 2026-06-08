@@ -11,12 +11,29 @@ The QA / review role of the Claude Code loop — the extra pair of eyes that mak
 
 Poll for issues in In Review carrying `cc-qa` (set by the exec leg). Delivery projects only.
 
+## Dedup — one review per PR state
+
+Before reviewing, check whether a verdict already exists for the current PR head commit. The check is keyed on the commit SHA, not elapsed time, so qa-review still re-reviews after an In Review → Todo bounce where exec pushes new commits.
+
+1. **Fetch the PR's current head commit SHA.**
+2. **Scan existing GitHub PR comments** for any comment that starts with `[qa-review] HEAD: <sha>` where `<sha>` is the current head commit SHA (first 7 characters). Use this as the dedup key.
+3. **If a match is found:** skip silently — no comment, no state change. The verdict already exists; Aled's gate is the next action.
+4. **If no match:** proceed with the full review below.
+
+Every verdict comment **must** begin with:
+
+```
+[qa-review] HEAD: <sha7>
+```
+
+where `<sha7>` is the first 7 characters of the PR head commit SHA. This line is the dedup key.
+
 ## Behaviour
 
 Read the linked PR / diff and the acceptance criteria embedded in the ticket (Pattern A). Assess the change against those criteria, then:
 
-1. **Post the verdict comment on the Linear ticket** (so it's in the canonical record).
-2. **Post the same verdict comment on the GitHub PR** (so it's visible where Aled reviews and approves).
+1. **Post the verdict comment on the Linear ticket** (so it's in the canonical record). Begin the comment with `[qa-review] HEAD: <sha7>`.
+2. **Post the same verdict comment on the GitHub PR** (so it's visible where Aled reviews and approves). Begin the comment with `[qa-review] HEAD: <sha7>`.
 3. **Mark the PR as Ready for Review** (convert from draft) — draft signals WIP; a clean QA pass signals it's awaiting human sign-off.
 
 Verdict comes in one of two modes:
