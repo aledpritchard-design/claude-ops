@@ -29,7 +29,8 @@ For each ticket:
 2. **Claim** — move the ticket to In Progress and **clear the assignee**. This *is* the lock: a ticket In Progress under `agent:cc-exec` is being worked and is never re-grabbed. No separate lock label.
 3. Read the ticket, its embedded acceptance criteria (Pattern A), any PM comment, and — if this is a bounce — Aled's note.
 4. Run Claude Code on this ticket's branch. Open a PR. Never merge.
-5. **Hand off** — set `agent:cc-qa` (evicts `agent:cc-exec`), move to In Review, **leave the ticket unassigned**, and comment the PR link and a short summary. The assignee stays clear through exec and review; cc-qa assigns Aled once review is done (see qa-review). This keeps "assigned to Aled" meaning "Aled's decision is needed now", not "in flight". Leave a comment for the PM leg where project management is needed.
+5. **Rebase before hand-off** — fetch `origin/main`, rebase the branch onto it, resolve any conflicts, and re-run format and tests to confirm the PR is clean against the current baseline. Force-push the updated branch. If the rebase produces unresolvable conflicts, take the Blocked path.
+6. **Hand off** — set `agent:cc-qa` (evicts `agent:cc-exec`), move to In Review, **leave the ticket unassigned**, and comment the PR link and a short summary. The assignee stays clear through exec and review; cc-qa assigns Aled once review is done (see qa-review). This keeps "assigned to Aled" meaning "Aled's decision is needed now", not "in flight". Leave a comment for the PM leg where project management is needed.
 
 Then re-run the eligibility scan and take the next ticket. **End the run** when no eligible ticket remains. If the run is nearing its time budget, stop claiming new tickets — but always finish the in-flight ticket's handoff first, so an ending run leaves at most the one ticket it was actively working part-done (the same exposure as a single-ticket run).
 
