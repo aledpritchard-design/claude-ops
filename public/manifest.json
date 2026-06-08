@@ -1,0 +1,57 @@
+[
+  {
+    "name": "exec",
+    "type": "skill",
+    "domain": "ops",
+    "status": "done",
+    "gating": "public",
+    "downloadable": true,
+    "summary": "Execute a Claude Code ticket end to end and open a pull request for review, on behalf of the cc-exec role",
+    "composed_of": [],
+    "_path": ".claude/skills/exec/SKILL.md"
+  },
+  {
+    "name": "linear-conventions",
+    "type": "skill",
+    "domain": "ops",
+    "status": "done",
+    "gating": "public",
+    "downloadable": true,
+    "summary": "How to create, label, route, and validate work in Aled Pritchard's Linear workspace (teams: careerOS, Apps, Pipeline,…",
+    "composed_of": [],
+    "_path": ".claude/skills/linear-conventions/SKILL.md"
+  },
+  {
+    "name": "pm-merge",
+    "type": "skill",
+    "domain": "ops",
+    "status": "done",
+    "gating": "public",
+    "downloadable": true,
+    "summary": "Merge approved pull requests on behalf of the PM agent",
+    "composed_of": [],
+    "_path": ".claude/skills/pm-merge/SKILL.md"
+  },
+  {
+    "name": "pm-triage",
+    "type": "skill",
+    "domain": "ops",
+    "status": "done",
+    "gating": "public",
+    "downloadable": true,
+    "summary": "Triage and project-manage Linear tickets in Aled's delivery projects on behalf of the Claude Code PM role",
+    "composed_of": [],
+    "_path": ".claude/skills/pm-triage/SKILL.md"
+  },
+  {
+    "name": "qa-review",
+    "type": "skill",
+    "domain": "ops",
+    "status": "done",
+    "gating": "public",
+    "downloadable": true,
+    "summary": "Review a Claude Code pull request for Aled and write a plain-language verdict he can act on without reading the code",
+    "composed_of": [],
+    "_path": ".claude/skills/qa-review/SKILL.md"
+  }
+]

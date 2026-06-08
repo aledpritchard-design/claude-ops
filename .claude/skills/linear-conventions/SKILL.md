@@ -1,6 +1,16 @@
 ---
 name: linear-conventions
-description: How to create, label, route, and validate work in Aled Pritchard's Linear workspace (teams: careerOS, Apps, Pipeline, A1, Mr Pritchard). Use this skill whenever working with Aled's Linear — creating or updating tickets, filing documents, choosing teams, projects, or labels, recording decisions, or running agent work that touches Linear. Trigger it even when the user doesn't name the conventions explicitly: any time the task involves making a Linear ticket, a Linear doc, a decision-log entry, or routing work between the human and an agent, these conventions apply. Getting the team, labels, states, or validation pattern wrong creates real cleanup, so consult this first rather than guessing.
+description: >-
+  How to create, label, route, and validate work in Aled Pritchard's Linear
+  workspace (teams: careerOS, Apps, Pipeline, A1, Mr Pritchard). Use this skill
+  whenever working with Aled's Linear — creating or updating tickets, filing
+  documents, choosing teams, projects, or labels, recording decisions, or
+  running agent work that touches Linear. Trigger it even when the user doesn't
+  name the conventions explicitly: any time the task involves making a Linear
+  ticket, a Linear doc, a decision-log entry, or routing work between the human
+  and an agent, these conventions apply. Getting the team, labels, states, or
+  validation pattern wrong creates real cleanup, so consult this first rather
+  than guessing.
 ---
 
 > *This is the canonical copy of this skill. The corresponding Linear doc (*`skill.linear-conventions`*) is a reference copy. Edit here; re-sync to Linear after changes.*
