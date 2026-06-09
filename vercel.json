@@ -1,0 +1,5 @@
+{
+  "buildCommand": "npm run build:manifest && next build",
+  "outputDirectory": "out",
+  "framework": "nextjs"
+}
