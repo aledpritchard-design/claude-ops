@@ -78,3 +78,5 @@ For each qualifying ticket:
 - Repos: delivery repo(s) + aledpritchard-design/claude-ops (for skill loading).
 - Routine prompt: Run the pm-merge skill.
 - Cadence: hourly.
+
+On finish, propose os.Claude Backlog tickets for any friction, per the ops-retro skill.
