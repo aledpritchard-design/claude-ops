@@ -56,3 +56,5 @@ Plain language throughout — Aled acts on it without reading the code.
 - Claude Code Desktop -> Schedule -> New remote task.
 - Connectors: Linear + GitHub (read + write access to the PR for comments and draft conversion).
 - Routine prompt: "Run the qa-review skill."
+
+On finish, propose os.Claude Backlog tickets for any friction, per the ops-retro skill.

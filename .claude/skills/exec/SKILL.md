@@ -55,3 +55,5 @@ Then re-run the eligibility scan and take the next ticket. **End the run** when 
 - The routine prompt: "Run the exec skill."
 
 > Lock note: this skill and `linear-conventions` both use **status as the lock** (Todo = ready, In Progress = running). No `state:locked` label exists or is needed.
+
+On finish, propose os.Claude Backlog tickets for any friction, per the ops-retro skill.

@@ -57,3 +57,5 @@ Never act on a Refinement ticket that has no new comment from Aled.
 - Claude Code Desktop -> Schedule -> New remote task. Cadence: a few times a day (mind the ~1h floor).
 - Connector: Linear only.
 - Routine prompt: "Run the pm-triage skill."
+
+On finish, propose os.Claude Backlog tickets for any friction, per the ops-retro skill.

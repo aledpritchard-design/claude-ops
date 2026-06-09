@@ -1,5 +1,53 @@
 [
   {
+    "name": "cos-article",
+    "type": "skill",
+    "domain": "content",
+    "surface": "claude-skill",
+    "status": "proposed",
+    "gating": "public",
+    "downloadable": true,
+    "summary": "Procedure for writing long-form articles for the careerOS writing surface.",
+    "composed_of": [],
+    "_path": ".claude/skills/cos-article/SKILL.md"
+  },
+  {
+    "name": "cos-case-study",
+    "type": "skill",
+    "domain": "content",
+    "surface": "claude-skill",
+    "status": "proposed",
+    "gating": "public",
+    "downloadable": true,
+    "summary": "Procedure for writing cOS case studies sourced from truth captures.",
+    "composed_of": [],
+    "_path": ".claude/skills/cos-case-study/SKILL.md"
+  },
+  {
+    "name": "cos-tov",
+    "type": "skill",
+    "domain": "content",
+    "surface": "claude-skill",
+    "status": "proposed",
+    "gating": "public",
+    "downloadable": true,
+    "summary": "Apply Aled's tone of voice — calm, precise, structurally confident.",
+    "composed_of": [],
+    "_path": ".claude/skills/cos-tov/SKILL.md"
+  },
+  {
+    "name": "cos-truth-capture",
+    "type": "skill",
+    "domain": "content",
+    "surface": "claude-skill",
+    "status": "proposed",
+    "gating": "public",
+    "downloadable": true,
+    "summary": "Procedure for writing a truth capture (tc.*) from a build, role, or project.",
+    "composed_of": [],
+    "_path": ".claude/skills/cos-truth-capture/SKILL.md"
+  },
+  {
     "name": "exec",
     "type": "skill",
     "domain": "ops",
@@ -20,6 +68,28 @@
     "summary": "How to create, label, route, and validate work in Aled Pritchard's Linear workspace (teams: careerOS, Apps, Pipeline,…",
     "composed_of": [],
     "_path": ".claude/skills/linear-conventions/SKILL.md"
+  },
+  {
+    "name": "ops-retro",
+    "type": "skill",
+    "domain": "ops",
+    "status": "done",
+    "gating": "public",
+    "downloadable": true,
+    "summary": "Turn friction observed while running Aled's skills, tasks, and routines into proposed improvement tickets in Linear (…",
+    "composed_of": [],
+    "_path": ".claude/skills/ops-retro/SKILL.md"
+  },
+  {
+    "name": "ops-sync",
+    "type": "skill",
+    "domain": "ops",
+    "status": "done",
+    "gating": "public",
+    "downloadable": true,
+    "summary": "Keep skill and task artefacts in parity between Claude (deployed copies) and the claude-ops repo (canon), so the agen…",
+    "composed_of": [],
+    "_path": ".claude/skills/ops-sync/SKILL.md"
   },
   {
     "name": "pm-merge",
