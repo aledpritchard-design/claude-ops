@@ -25,6 +25,7 @@ import {
   statSync,
   mkdirSync,
   existsSync,
+  rmSync,
 } from "fs";
 import { join, relative, dirname } from "path";
 import { fileURLToPath } from "url";
@@ -327,6 +328,29 @@ function main(): void {
   );
   console.log(
     `[build-manifest] wrote public/manifest.owner.json (${all.length} records)`,
+  );
+
+  // Downloads: emit a clean .md (body only, frontmatter stripped) for every
+  // public + downloadable artefact, named <artefact>.md. The downloads dir is
+  // rebuilt from scratch each run so no file lingers for an artefact that has
+  // since been made private or non-downloadable.
+  const downloadsDir = join(outDir, "downloads");
+  rmSync(downloadsDir, { recursive: true, force: true });
+  const downloadable = publicRecords.filter((r) => r.downloadable);
+  if (downloadable.length > 0) {
+    mkdirSync(downloadsDir, { recursive: true });
+    for (const record of downloadable) {
+      const source = readFileSync(join(repoRoot, record._path), "utf-8");
+      const body = matter(source).content.trim();
+      writeFileSync(
+        join(downloadsDir, `${record.name}.md`),
+        body + "\n",
+        "utf-8",
+      );
+    }
+  }
+  console.log(
+    `[build-manifest] wrote ${downloadable.length} download(s) to public/downloads/`,
   );
 }
 

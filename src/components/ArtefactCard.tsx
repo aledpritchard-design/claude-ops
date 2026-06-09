@@ -16,7 +16,8 @@ export default function ArtefactCard({
   sectionIndex,
   cardIndex,
 }: Props) {
-  const { name, type, domain, surface, status, summary } = artefact;
+  const { name, type, domain, surface, status, summary, downloadable } =
+    artefact;
 
   return (
     <div className="bg-[#151616] flex flex-col items-start justify-between p-6 h-[390px] min-w-0">
@@ -63,6 +64,15 @@ export default function ArtefactCard({
           <span className="text-white/70">status</span>
           <span className="text-white">{STATUS_LABELS[status]}</span>
         </div>
+        {downloadable && (
+          <a
+            href={`downloads/${name}.md`}
+            download={`${name}.md`}
+            className="text-white/70 hover:text-white underline underline-offset-2 transition-colors w-fit mt-1"
+          >
+            Download .md
+          </a>
+        )}
       </div>
     </div>
   );
