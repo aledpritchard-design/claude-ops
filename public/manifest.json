@@ -1,5 +1,53 @@
 [
   {
+    "name": "content-engine",
+    "type": "agent",
+    "domain": "content",
+    "status": "proposed",
+    "gating": "public",
+    "downloadable": true,
+    "summary": "Three-stage content pipeline — truth capture to case study to article — governed by cos-tov throughout.",
+    "composed_of": [
+      {
+        "name": "cos-truth-capture",
+        "type": "skill",
+        "domain": "content",
+        "surface": "claude-skill",
+        "status": "proposed",
+        "gating": "public",
+        "downloadable": true,
+        "summary": "Procedure for writing a truth capture (tc.*) from a build, role, or project.",
+        "composed_of": [],
+        "_path": ".claude/skills/cos-truth-capture/SKILL.md"
+      },
+      {
+        "name": "cos-case-study",
+        "type": "skill",
+        "domain": "content",
+        "surface": "claude-skill",
+        "status": "proposed",
+        "gating": "public",
+        "downloadable": true,
+        "summary": "Procedure for writing cOS case studies sourced from truth captures.",
+        "composed_of": [],
+        "_path": ".claude/skills/cos-case-study/SKILL.md"
+      },
+      {
+        "name": "cos-article",
+        "type": "skill",
+        "domain": "content",
+        "surface": "claude-skill",
+        "status": "proposed",
+        "gating": "public",
+        "downloadable": true,
+        "summary": "Procedure for writing long-form articles for the careerOS writing surface.",
+        "composed_of": [],
+        "_path": ".claude/skills/cos-article/SKILL.md"
+      }
+    ],
+    "_path": ".claude/skills/content-engine/SKILL.md"
+  },
+  {
     "name": "cos-article",
     "type": "skill",
     "domain": "content",
