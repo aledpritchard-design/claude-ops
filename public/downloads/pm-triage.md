@@ -6,7 +6,7 @@ The PM / triage role of the Claude Code loop. Runs as a polling Cloud Routine �
 
 Poll for issues carrying `agent:cc-pm` across delivery projects only — never the Pipeline team (Network / Roles / Advisory / Pitches). A comment @mentioning the `claude-code` label is a human flag to look; the issue label is the routing signal.
 
-The run also revisits tickets in **Blocked** carrying any `agent:*` label (not only cc-pm), to catch blockers that have since cleared — see *Blocked-state sweep* below. **In Progress** and **In Review** are never touched by the run.
+The run also revisits tickets in **Blocked** carrying any `agent:*` label (not only cc-pm), to catch blockers that have since cleared — see *Blocked-state sweep* below. **In Progress** is never touched. **In Review** tickets are normally skipped — with one exception: In Review tickets carrying `agent:cc-pm` may carry a send-back instruction from Aled and must be disambiguated (see *Send-back routing* below).
 
 ## Behaviour
 
@@ -17,6 +17,21 @@ Read the issue and its comments, then:
   - **Needs execution** — set `agent:cc-exec` (single-select evicts `agent:cc-pm`), move to Todo, **clear the assignee**, and comment what's needed with the acceptance criteria embedded in the body (Pattern A), so the exec leg is self-contained. Only ever route a **leaf ticket** to cc-exec — never an epic (`type:epic` is an outcome closed by Aled when its children are done; see linear-conventions *Structure*).
   - **Needs a human decision** — leave a clear comment and assign to Aled. The comment must @mention him (`@aledpritchard`) and lead with the specific action or decision needed, phrased so he can reply or act directly. Do not guess.
   - **Not actionable** — route to the right state (needs info, blocked, canceled) with a one-line reason. Moving a ticket to **Blocked** also sets priority **Urgent (1)**.
+
+## Send-back routing
+
+When a delivery ticket fails late (qa-review "changes needed" or pm-merge CI failure), it lands on Aled with `agent:human`. Aled's decision to retry is gated: he sets `agent:cc-pm` on the ticket with a send-back comment.
+
+Because `agent:cc-pm` on an In Review ticket has two meanings — **"approve and merge"** (→ pm-merge acts) and **"send back to exec"** (→ this skill acts) — the PM leg reads Aled's comment intent to disambiguate. Approval comments signal satisfaction ("merge", "ship it", "@cc-pm approve", looks good, etc.); send-back comments signal rework ("fix X", "changes needed", "send back", "bounce", etc.). When intent is genuinely unclear, lean toward leaving the ticket for pm-merge (the safer default) and post a clarifying comment for Aled.
+
+**On a send-back:**
+
+1. Relabel `agent:cc-exec` (evicts `agent:cc-pm`).
+2. Move the ticket to **Todo**.
+3. Ensure the fix instructions are in the ticket body or the most recent comment so exec is self-contained.
+4. Clear the assignee. exec picks it up on the next run.
+
+Because Aled is in the loop on every failure, no automatic exec↔qa loop is introduced and no loop-cap is needed.
 
 ## Refinement: placement, structure, assignee
 

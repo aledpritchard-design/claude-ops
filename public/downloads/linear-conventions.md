@@ -73,7 +73,7 @@ Two workflows are in play, by team:
 
 **Refinement — Aled's lane.** Refinement holds tickets that have been refined and are parked awaiting his promotion to Todo (or his answer to an open question). It is the human refinement gate. Agents treat Refinement tickets as **read-only**: never re-refine, relabel, or re-route them — with one exception. A ticket where Aled has commented since the last pm/agent comment is a signal to act: the pm leg processes those comments as trusted instructions (applies his answers to the body, replies to confirm, promotes to Todo when he says ready, and clears the assignee once the ask is resolved). See *pm-triage* for the comment-sweep behaviour. A no-gap refined ticket parks here **unassigned**; a ticket carrying a genuine question for Aled is assigned to him (see the assignee rule under *Structure*).
 
-**Blocked.** Set by the exec leg when it hits an unresolvable blocker mid-run (no write access, a missing dependency or credential, a requirement too ambiguous to act on safely). The ticket leaves In Progress so the leg is not jammed, carries `exec:human`, and is assigned to Aled. He clears the blocker and moves it back to Todo to retry. **Any transition to Blocked sets priority Urgent (1)** — so blocked work is always visible at the top of the queue and never sits unnoticed. This applies to all engineering-workflow teams (careerOS, Apps, A1, Mr Pritchard); the Pipeline team has no Blocked state. Not the same as a blocked-by relation (a genuine dependency between tickets — see *Structure*).
+**Blocked.** Set by the exec leg when it hits an unresolvable blocker mid-run (no write access, a missing dependency or credential, a requirement too ambiguous to act on safely). The ticket leaves In Progress so the leg is not jammed, carries `agent:human`, and is assigned to Aled. He clears the blocker and moves it back to Todo to retry. **Any transition to Blocked sets priority Urgent (1)** — so blocked work is always visible at the top of the queue and never sits unnoticed. This applies to all engineering-workflow teams (careerOS, Apps, A1, Mr Pritchard); the Pipeline team has no Blocked state. Not the same as a blocked-by relation (a genuine dependency between tickets — see *Structure*).
 
 ## Labels
 
@@ -81,11 +81,11 @@ Every ticket should carry the labels that classify it. The taxonomy:
 
 **Type** (what kind of work): `type:epic`, `type:feature`, `type:story`, `type:task`, `type:bug`
 
-**Executor** (who does it): either `exec:human`, or one label from the `agent` group.
+**Executor** (who does it): one label from the `agent` group (single-select).
 
-* `exec:human` — decisions, design, launch ops, anything human-owned.
-* `agent` **group (single-select)** — which agent owns the work. The former `exec:agent:*` and `author:claude-code` labels were retired (2026-06-02) and folded into this one group:
+* `agent` **group (single-select)** — which agent owns the work. The former `exec:agent:*` and `author:claude-code` labels were retired (2026-06-02); `exec:human` was retired (2026-06-10) — all folded into this one group:
   * `agent:cc-pm`, `agent:cc-exec`, `agent:cc-qa` — the three Claude Code roles in the PM -> exec -> QA loop (see *Agent routing* below)
+  * `agent:human` — decisions, design, launch ops, anything human-owned. Also set by exec and pm-merge on the Blocked/CI-fail path (evicts the active agent label)
   * `agent:claude` — claude.ai work that needs an MCP the CLI lacks (e.g. Figma)
   * `agent:codex`, `agent:gpt`, `agent:replit` — other agents
 * **Single-select:** an issue carries exactly one `agent:*` at a time. Setting a new one evicts the previous, so a handoff is just setting the next role — never two at once.
@@ -101,7 +101,7 @@ Every ticket should carry the labels that classify it. The taxonomy:
 * Surfaced markers: `surfaced:role`, `surfaced:advisory`, `surfaced:pitch`, `surfaced:done` (see above)
 * Reporting: `reporting:contact`
 
-A typical engineering ticket carries one `type:`, one `work:`, and either `exec:human` or one `agent:*`. A Network contact carries a `contact:*`, `reporting:contact`, `type:task`, and an `opp:*` only where a mode is known.
+A typical engineering ticket carries one `type:`, one `work:`, and one `agent:*`. A Network contact carries a `contact:*`, `reporting:contact`, `type:task`, and an `opp:*` only where a mode is known.
 
 Note: `author:*` (`author:aled`, `author:codex`, etc.) marks who *created* something. The agent execution axis is the `agent` group above. (`author:claude-code` and all `exec:agent:*` labels were retired on 2026-06-02 — `agent:cc-*` now carries Claude Code routing.)
 
@@ -114,6 +114,8 @@ Claude Code work runs as a loop across three roles, routed by the single-select 
 * `agent:cc-qa` — review. Reads the PR against the criteria embedded in the ticket (Pattern A) and writes a plain-language summary Aled can act on without reading code: if clean, what was done plus confirmation it meets the DoD; if changes are needed, everything the exec agent needs to act on. Does not merge, change state, or change the `agent:*` label. Once the verdict is posted, it **assigns Aled** (leaving the label `agent:cc-qa`), so the reviewed ticket sits in his queue. Switching to `agent:cc-pm` is Aled's approval action — the ticket stays in the QA lane while he may still have follow-ups.
 
 With the ticket assigned to him and still at `agent:cc-qa`, Aled either raises follow-ups (a bounce — **In Review -> Todo with a note** re-triggers the exec agent on the same ticket) or approves by **setting `agent:cc-pm` and giving his `@cc-pm` signal**, which triggers the pm-merge leg. This is Pattern A (below) with a QA write-up and an explicit approval gate added — review stays a state transition Aled owns, not a separate ticket.
+
+**Send-back and disambiguation.** When a delivery ticket fails late (qa-review "changes needed" or pm-merge CI failure), it lands on Aled with `agent:human`. Aled's decision to retry is gated: he sets `agent:cc-pm` on the ticket with a send-back comment. Because `agent:cc-pm` on an In Review ticket carries two meanings — **"approve and merge"** (→ pm-merge) and **"send back to exec"** (→ pm-triage) — the pm leg reads Aled's comment intent to disambiguate. On a send-back, pm-triage relabels `agent:cc-exec`, moves the ticket to **Todo**, ensures the fix instructions are in the body or most recent comment, and clears the assignee. No keyword required; the intent in the comment text is the signal. Because Aled is in the loop on every failure, no automatic exec↔qa loop is introduced.
 
 Concurrency: the exec leg only picks up `agent:cc-exec` tickets in **Todo**, and skips its run if any `agent:cc-exec` ticket is already In Progress (one Claude Code agent per repo). Todo = ready, In Progress = running. No separate lock label is required.
 
@@ -221,7 +223,7 @@ Aled's tone of voice applies to everything written into Linear: calm, precise, s
 - [ ] Right team and project? (Pipeline for people/opportunities; A1 for the consultancy; Mr Pritchard for editorial; careerOS for the system; Apps for builds.)
 - [ ] Person -> Network; opportunity -> Roles/Advisory/Pitches titled for the opportunity, linked back?
 - [ ] Backlog (not Todo) if Aled hasn't refined it?
-- [ ] Correct label set? (engineering: one `type:`/`work:`, plus `exec:human` or one `agent:*`; Pipeline: `contact:`/`reporting:contact`/`type:task`, `opp:` only where known)
+- [ ] Correct label set? (engineering: one `type:`/`work:`, plus one `agent:*`; Pipeline: `contact:`/`reporting:contact`/`type:task`, `opp:` only where known)
 - [ ] Assignee — Aled only where a genuine human action (question, decision, verification) is needed, not as a blanket gate?
 - [ ] Hierarchy and milestone set? (Leaf ticket under the right epic/feature; milestone assigned where the project has them. Epics never carry `agent:cc-exec`.)
 - [ ] For agent tickets: acceptance criteria embedded in the body (Pattern A)?
