@@ -69,7 +69,7 @@ For each qualifying ticket:
 
 - Deployed as a Claude Code cloud scheduled task (cloud, machine off).
 - Connectors: Linear + GitHub (Contents: read & write; Pull requests: read & write on delivery repos).
-- Repos: delivery repo(s) + aledpritchard-design/claude-ops (for skill loading).
+- Repos: delivery repo(s) + assoc-one/claude-ops (for skill loading).
 - Routine prompt: Run the pm-merge skill.
 - Cadence: hourly.
 
