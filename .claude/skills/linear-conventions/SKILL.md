@@ -172,6 +172,24 @@ Set **assignee** (Aled only when the ticket carries a genuine question or decisi
 
 Issue numbers are auto-assigned by Linear (each team has its own key — COS, APP, PIPE, A1, MRP) — never invent them.
 
+## Decomposing mixed-executor / multi-gate tickets
+
+A ticket that mixes executor types or requires more than one human gate at different stages cannot be expressed cleanly in the build loop. Split it before routing — never after.
+
+**The two rules (new tickets only — no retroactive sweep of open mixed tickets):**
+
+1. **Split human-owned setup from agent implementation.** A discrete human-owned prerequisite (account creation, credential provisioning, a design or launch decision) becomes its own `exec:human` ticket, marked as blocking the implementation ticket.
+2. **One human gate per ticket.** If a ticket needs more than one human gate at different stages (provision-then-build, or build-then-approve-a-production-migration), split so each ticket has a single gate. A production data migration in particular gets its own ticket.
+
+**Trivial-enough threshold — leave bundled only when all three hold:**
+- Same executor throughout — no human↔agent switch.
+- Completable in the same session/PR with no external wait (no account, credential, third party, DNS, or another person).
+- Reversible and not separately approved (no production migration, launch, or irreversible action).
+
+Split when any one fails. Time is a tiebreaker, not the test — the governing question is "is there a real hand-off or gate?", not the clock.
+
+pm-triage enforces this at ticket intake: split multi-gate tickets, or flag when a split is not possible.
+
 ## Documents and the decision log
 
 **Filing a document:** use the document tool (create/update), set `title` and the parent `project`. Documents hold canon (specs, patterns, truth captures, playbooks, prompts). One doc per artefact. Type-prefix the title: `skill.` (reusable procedure), `routine.` (scheduled automation), `task.` (one-off).
