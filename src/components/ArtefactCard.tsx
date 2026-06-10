@@ -9,14 +9,16 @@ interface Props {
   artefact: ManifestRecord;
   sectionIndex: number;
   cardIndex: number;
+  isOwner?: boolean;
 }
 
 export default function ArtefactCard({
   artefact,
   sectionIndex,
   cardIndex,
+  isOwner = false,
 }: Props) {
-  const { name, type, domain, surface, status, summary, downloadable } =
+  const { name, type, domain, surface, status, summary, downloadable, gating, _path } =
     artefact;
 
   return (
@@ -30,13 +32,18 @@ export default function ArtefactCard({
 
       {/* middle: name + descriptor */}
       <div className="flex flex-col gap-2 w-full shrink-0">
-        <div className="flex gap-2 items-center">
+        <div className="flex gap-2 items-center flex-wrap">
           <span className="text-[10px] font-medium tracking-[0.3px] uppercase text-white/50 bg-white/10 px-2 py-0.5 rounded-sm">
             {type}
           </span>
           <span className="text-[10px] font-medium tracking-[0.3px] uppercase text-white/50 bg-white/10 px-2 py-0.5 rounded-sm">
             {DOMAIN_LABELS[domain]}
           </span>
+          {isOwner && gating === "private" && (
+            <span className="text-[10px] font-medium tracking-[0.3px] uppercase text-amber-400/80 bg-amber-400/10 px-2 py-0.5 rounded-sm">
+              Private
+            </span>
+          )}
         </div>
         <p className="text-[22px] font-normal leading-[1.1] text-white break-words">
           {name}
@@ -71,6 +78,16 @@ export default function ArtefactCard({
             className="text-white/70 hover:text-white underline underline-offset-2 transition-colors w-fit mt-1"
           >
             Download .md
+          </a>
+        )}
+        {isOwner && _path && (
+          <a
+            href={`https://github.com/assoc-one/claude-ops/blob/main/${_path}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-white/40 hover:text-white/70 underline underline-offset-2 transition-colors w-fit"
+          >
+            Source ↗
           </a>
         )}
       </div>

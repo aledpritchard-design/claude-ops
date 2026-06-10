@@ -56,5 +56,6 @@ Plain language throughout — Aled acts on it without reading the code.
 - Claude Code Desktop -> Schedule -> New remote task.
 - Connectors: Linear + GitHub (read + write access to the PR for comments and draft conversion).
 - Routine prompt: "Run the qa-review skill."
+- Load MCP tool schemas via ToolSearch before the first calls: `select:mcp__Linear__get_issue,mcp__github__add_issue_comment`.
 
 On finish, propose os.Claude Backlog tickets for any friction, per the ops-retro skill.

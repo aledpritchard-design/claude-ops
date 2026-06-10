@@ -20,7 +20,7 @@ A run is a loop. **Repeat the cycle below for one eligible ticket at a time, hig
 
 For each ticket:
 
-1. **Sync** — fetch and check out latest `main`, then cut a fresh `claude/`-prefixed branch for *this* ticket off it. Every ticket gets its own branch off current `main`, never off a previous ticket's branch (genuine dependencies are blocked-by relations, so a blocker is already merged before its dependent is eligible).
+1. **Sync** — fetch and check out latest `main`, then cut a fresh `claude/`-prefixed branch for *this* ticket off it. Every ticket gets its own branch off current `main`, never off a previous ticket's branch (genuine dependencies are blocked-by relations, so a blocker is already merged before its dependent is eligible). The branch name for each ticket should be `claude/<ticket-id>` (e.g. `claude/app-144`). When the session provides a pre-generated branch name, use it for the first ticket only; cut a fresh `claude/<ticket-id>` branch off `origin/main` for every subsequent ticket in the same run.
 2. **Claim** — move the ticket to In Progress and **clear the assignee**. This *is* the lock: a ticket In Progress under `agent:cc-exec` is being worked and is never re-grabbed. No separate lock label.
 3. Read the ticket, its embedded acceptance criteria (Pattern A), any PM comment, and — if this is a bounce — Aled's note.
 4. Run Claude Code on this ticket's branch. Open a PR. Never merge.
@@ -29,14 +29,14 @@ For each ticket:
 
 Then re-run the eligibility scan and take the next ticket. **End the run** when no eligible ticket remains. If the run is nearing its time budget, stop claiming new tickets — but always finish the in-flight ticket's handoff first, so an ending run leaves at most the one ticket it was actively working part-done (the same exposure as a single-ticket run).
 
-**Blocked (fail-safe).** If you hit a blocker you cannot resolve — push rejected / no write access, a missing dependency or credential, or a requirement too ambiguous to act on safely — do **not** leave the ticket In Progress and do **not** open a half-baked PR. Move it to **Blocked**, set `exec:human` (evicts `agent:cc-exec`), assign Aled, and comment plainly what blocked you and what is needed to clear it. This empties In Progress so the leg is not jammed and the next ticket can run, and it surfaces the blocker to Aled. Aled clears the blocker and moves the ticket back to Todo to retry. Within a run, a Blocked outcome ends only *that ticket's* cycle — the run continues to the next eligible ticket.
+**Blocked (fail-safe).** If you hit a blocker you cannot resolve — push rejected / no write access, a missing dependency or credential, or a requirement too ambiguous to act on safely — do **not** leave the ticket In Progress and do **not** open a half-baked PR. Move it to **Blocked**, set priority **Urgent (1)**, set `agent:human` (evicts `agent:cc-exec`), assign Aled, and comment plainly what blocked you and what is needed to clear it. This empties In Progress so the leg is not jammed and the next ticket can run, and it surfaces the blocker to Aled. Aled clears the blocker and moves the ticket back to Todo to retry. Within a run, a Blocked outcome ends only *that ticket's* cycle — the run continues to the next eligible ticket. For unexpected errors outside any ticket's scope (infrastructure failures, tool errors, ops-layer gaps), call `issue-capture` to file a Backlog ticket.
 
 **Bounce:** Aled moves In Review → **Todo** with a note; the next run re-picks it and iterates on the existing PR. (Todo, not In Progress, so In Progress always means "running now.")
 
 ## Guardrails
 
 - Never merges. Main branch protected; merge is Aled's.
-- On an unresolvable blocker, move the ticket to **Blocked** + `exec:human` + assign Aled. Never leave it In Progress — that jams the leg and it never retries.
+- On an unresolvable blocker, move the ticket to **Blocked**, set priority **Urgent (1)**, set `agent:human`, assign Aled. Never leave it In Progress — that jams the leg and it never retries.
 - One PR per ticket. Never open a partial or speculative PR to "make progress" — Blocked is the honest outcome.
 - A run works the whole eligible queue, but **serially** — one ticket fully handed off before the next is claimed, each on its own branch off latest `main`. Never run two tickets' branches in one session in parallel; they would collide in the repo.
 - Fresh cloud session each run, so all state lives in Linear, not the agent.

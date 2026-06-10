@@ -28,7 +28,7 @@ Runs as a scheduled Cowork task on the Linear + GitHub connectors.
 1. **Enumerate** skills and tasks on the Claude side and the corresponding directories in claude-ops.
 2. **Compare** content, normalising whitespace before diffing.
 3. **Repo ahead of Claude** (stale-on-Claude **or** new-in-repo-not-yet-on-Claude) → repo wins. Where the surface allows writes, update the Claude-side copy in place. Where it doesn't (e.g. plugin-bundled, read-only skills), emit a ready-to-install drop-in: write the current repo content to `<skill-name>/SKILL.md` in the outputs folder — filename exactly `SKILL.md` (uppercase), each skill in its own folder so names don't collide. See *The reinstall handoff* below.
-4. **In Claude, missing from repo** → the dangerous case for the web page: never silently commit. Raise a ticket (or comment on the run report) listing the uncommitted artefact for Aled to review and commit.
+4. **In Claude, missing from repo** → the dangerous case for the web page: never silently commit. Call `issue-capture` to file a Backlog ticket in os.Claude flagging the uncommitted artefact for Aled to review and commit.
 5. **Edited on both sides** → conflict: do not overwrite. Flag to Aled with a diff.
 6. **Report** — end every run with a short parity report: in-sync count, synced items, flagged items, and the path of every `SKILL.md` drop-in written this run (so the reinstall handoff is traceable).
 
