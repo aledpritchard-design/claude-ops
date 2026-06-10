@@ -23,9 +23,17 @@ Every verdict comment **must** begin with:
 
 where `<sha7>` is the first 7 characters of the PR head commit SHA. This line is the dedup key.
 
+## Reviewer independence
+
+QA is the independent pass, not a same-author rubber stamp. The lever is the reviewer's inputs and framing, not which model runs — a reviewer that inherits the developer's context (conversation, rationale, assumptions) self-agrees regardless of the weights it runs on. The fresh-session Cloud Routine already gives session-level isolation; the rules below tighten the inputs and framing *within* a single review.
+
+- **Isolated inputs only.** Review from the ticket, its embedded acceptance criteria (Pattern A), and the diff / PR — nothing else. Read the acceptance criteria from the **ticket body** (canonical), never from the PR description. Do not rely on the exec session's chain of thought or the build conversation. Where the PR description carries rationale, treat it as a claim to verify, not as ground truth.
+- **Adversarial framing.** For each acceptance criterion, actively look for the reason it fails — try to prove it fails rather than confirm it works. Default posture: **reject unless each criterion is demonstrably met.**
+- **Evidence, not reasoning.** Clone the repo in-session and execute the work: run the test suite and check actual behaviour against each criterion, rather than reading the diff and reasoning that it is probably fine. The verdict cites what was run and what was observed. Where a criterion has no test to exercise, do not wave it through — flag the coverage gap as a finding.
+
 ## Behaviour
 
-Read the linked PR / diff and the acceptance criteria embedded in the ticket (Pattern A). Assess the change against those criteria, then:
+Working from the isolated inputs above, assess the change against each acceptance criterion (Pattern A) — adversarially, and on the evidence of what you actually ran, per *Reviewer independence*. Then:
 
 1. **Post the verdict comment on the Linear ticket** (so it's in the canonical record). Begin the comment with `[qa-review] HEAD: <sha7>`.
 2. **Post the same verdict comment on the GitHub PR** (so it's visible where Aled reviews and approves). Begin the comment with `[qa-review] HEAD: <sha7>`.
