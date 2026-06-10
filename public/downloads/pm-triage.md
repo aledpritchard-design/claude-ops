@@ -6,6 +6,8 @@ The PM / triage role of the Claude Code loop. Runs as a polling Cloud Routine �
 
 Poll for issues carrying `agent:cc-pm` across delivery projects only — never the Pipeline team (Network / Roles / Advisory / Pitches). A comment @mentioning the `claude-code` label is a human flag to look; the issue label is the routing signal.
 
+The run also revisits tickets in **Blocked** carrying any `agent:*` label (not only cc-pm), to catch blockers that have since cleared — see *Blocked-state sweep* below. **In Progress** and **In Review** are never touched by the run.
+
 ## Behaviour
 
 Read the issue and its comments, then:
@@ -36,6 +38,24 @@ Refinement is Aled's lane and is **read-only** to the pm leg — never re-refine
 - Clear the assignee once the ask is resolved.
 
 Never act on a Refinement ticket that has no new comment from Aled.
+
+## Blocked-state sweep
+
+Blocked is otherwise a silent gap: a blocker that has since cleared (PR merged, dependency Done, relation cancelled) leaves the dependent stranded until Aled notices by hand. Each run sweeps it.
+
+Scope: tickets in **Blocked** carrying **any** `agent:*` label (not only cc-pm). In Progress and In Review are left untouched.
+
+For each such ticket, read its blocked-by relations and judge whether each blocker is resolved (Done / merged / Canceled / Duplicate):
+
+- **Stale-relation cleanup (autonomous).** Where a blocker was **Canceled** or marked **Duplicate**, actively remove that blocked-by relation and note the removal in a comment. This is the one autonomous mutation the sweep makes.
+- **All blockers cleared → surface, never auto-route.** Do not silently move the ticket onward — auto-routing a cleared ticket straight to cc-exec + Todo risks an unblock→route→re-block loop. Instead post a comment @mentioning Aled (`@aledpritchard`) with the recommended next move, assign him, and set priority **Urgent**. Only after Aled agrees does the *next* cc-pm run execute the move.
+- **Still genuinely blocked → leave in place.** Optionally note any stale or invalid blocker relation, but do not move it.
+
+**Unblock policy — what to recommend when all blockers have cleared:**
+
+- *Ready to action* (complete brief, just needs execution) → recommend **Todo** with concrete instructions. If it is repo/code work, the *subsequent* routing pass sets `agent:cc-exec` — never auto-set in the same run.
+- *Clearing it needs separate work* → recommend a new unblocking ticket in **Backlog** at High/Urgent, linked as the blocker.
+- *Brief now incomplete* → ask the specific question in-thread, refine on Aled's reply, then promote to Todo.
 
 ## Guardrails
 
