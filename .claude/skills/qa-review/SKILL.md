@@ -34,7 +34,7 @@ Read the linked PR / diff and the acceptance criteria embedded in the ticket (Pa
 
 1. **Post the verdict comment on the Linear ticket** (so it's in the canonical record). Begin the comment with `[qa-review] HEAD: <sha7>`.
 2. **Post the same verdict comment on the GitHub PR** (so it's visible where Aled reviews and approves). Begin the comment with `[qa-review] HEAD: <sha7>`.
-3. **Mark the PR as Ready for Review** (convert from draft) — draft signals WIP; a clean QA pass signals it's awaiting human sign-off.
+3. **If the PR is a draft, mark it as Ready for Review** — draft signals WIP; a clean QA pass signals it's awaiting human sign-off. Skip this step if the PR is already non-draft.
 
 Verdict comes in one of two modes:
 
