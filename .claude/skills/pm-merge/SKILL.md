@@ -53,14 +53,15 @@ For each qualifying ticket:
 5. **Blocked path — CI failure or conflict.**
    If required CI checks are failing, checks are still running, or there is a merge conflict:
    - Move the ticket to **Blocked**.
-   - Set priority **1 (Urgent)**.
-   - Set `exec:human` (evicts `agent:cc-pm`).
+   - Set priority **Urgent (1)**.
+   - Set `agent:human` (evicts `agent:cc-pm`).
    - Assign Aled.
    - Add a comment @mentioning Aled that lists:
      - Which checks are failing (by name) or that a conflict exists
      - The PR link
      - What is needed to unblock
    - Do **not** merge. Do not close the PR. Leave the branch in place.
+   - For unexpected errors outside the merge scope (tool failures, infrastructure errors), call `issue-capture` to file a Backlog ticket.
 
 ## Guardrails
 
