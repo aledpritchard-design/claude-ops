@@ -21,10 +21,19 @@ Runs as a scheduled Cowork task on the Linear + GitHub connectors.
 
 1. **Enumerate** skills and tasks on the Claude side and the corresponding directories in claude-ops.
 2. **Compare** content, normalising whitespace before diffing.
-3. **In repo, stale or missing in Claude** → repo wins: update the Claude-side copy where the surface allows writes; where it doesn't (e.g. plugin-bundled skills), produce the updated artefact and flag it for one-click reinstall.
+3. **Repo ahead of Claude** (stale-on-Claude **or** new-in-repo-not-yet-on-Claude) → repo wins. Where the surface allows writes, update the Claude-side copy in place. Where it doesn't (e.g. plugin-bundled, read-only skills), emit a ready-to-install drop-in: write the current repo content to `<skill-name>/SKILL.md` in the outputs folder — filename exactly `SKILL.md` (uppercase), each skill in its own folder so names don't collide. See *The reinstall handoff* below.
 4. **In Claude, missing from repo** → the dangerous case for the web page: never silently commit. Call `issue-capture` to file a Backlog ticket in os.Claude flagging the uncommitted artefact for Aled to review and commit.
 5. **Edited on both sides** → conflict: do not overwrite. Flag to Aled with a diff.
-6. **Report** — end every run with a short parity report: in-sync count, synced items, flagged items.
+6. **Report** — end every run with a short parity report: in-sync count, synced items, flagged items, and the path of every `SKILL.md` drop-in written this run (so the reinstall handoff is traceable).
+
+## The reinstall handoff (repo-ahead direction only)
+
+This is how the emitted drop-ins become installed skills — it applies **only** when the repo is ahead of a read-only Claude-side copy.
+
+- For each such skill, the run writes the current repo content to `<skill-name>/SKILL.md` in the outputs folder (uppercase `SKILL.md`, one per folder).
+- Presenting that file inline in Aled's UI surfaces a **save/update button** — that button *is* the install. Writing the file is therefore the whole fix; there is no separate "flag it and let a button re-pull later" path to fall back on.
+- The install write always happens in Aled's UI when he clicks save/update — **never from the run itself**. The run only produces the drop-in and names it in the parity report.
+- This path is for the repo-ahead direction only. The opposite case — an artefact in Claude but missing from the repo — is **unchanged**: never written as a drop-in, only flagged for Aled and committed via the normal PR route (step 4).
 
 ## Guardrails
 
