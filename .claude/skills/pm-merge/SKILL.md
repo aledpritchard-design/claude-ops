@@ -54,7 +54,7 @@ For each qualifying ticket:
    If required CI checks are failing, checks are still running, or there is a merge conflict:
    - Move the ticket to **Blocked**.
    - Set priority **1 (Urgent)**.
-   - Set `exec:human` (evicts `agent:cc-pm`).
+   - Set `agent:human` (evicts `agent:cc-pm`).
    - Assign Aled.
    - Add a comment @mentioning Aled that lists:
      - Which checks are failing (by name) or that a conflict exists

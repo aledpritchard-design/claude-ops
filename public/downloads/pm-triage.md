@@ -16,6 +16,21 @@ Read the issue and its comments, then:
   - **Needs a human decision** — leave a clear comment and assign to Aled. The comment must @mention him (`@aledpritchard`) and lead with the specific action or decision needed, phrased so he can reply or act directly. Do not guess.
   - **Not actionable** — route to the right state (needs info, blocked, canceled) with a one-line reason.
 
+## Send-back routing
+
+When a delivery ticket fails late (qa-review "changes needed" or pm-merge CI failure), it lands on Aled with `agent:human`. Aled's decision to retry is gated: he sets `agent:cc-pm` on the ticket with a send-back comment.
+
+Because `agent:cc-pm` on an In Review ticket has two meanings — **"approve and merge"** (→ pm-merge acts) and **"send back to exec"** (→ this skill acts) — the PM leg reads Aled's comment intent to disambiguate. Approval comments signal satisfaction ("merge", "ship it", "@cc-pm approve", looks good, etc.); send-back comments signal rework ("fix X", "changes needed", "send back", "bounce", etc.). When intent is genuinely unclear, lean toward leaving the ticket for pm-merge (the safer default) and post a clarifying comment for Aled.
+
+**On a send-back:**
+
+1. Relabel `agent:cc-exec` (evicts `agent:cc-pm`).
+2. Move the ticket to **Todo**.
+3. Ensure the fix instructions are in the ticket body or the most recent comment so exec is self-contained.
+4. Clear the assignee. exec picks it up on the next run.
+
+Because Aled is in the loop on every failure, no automatic exec↔qa loop is introduced and no loop-cap is needed.
+
 ## Refinement: placement, structure, assignee
 
 When refining a Backlog ticket, structure it before polishing its content:
