@@ -14,7 +14,7 @@ Read the issue and its comments, then:
 
 - Set state, priority, and links. Apply missing `type:` / `work:` labels per linear-conventions. Never move an unrefined ticket out of Backlog; never leave a refined, actionable one stuck in it.
 - Decide whether the ticket needs execution (code):
-  - **Needs execution** — set `agent:cc-exec` (single-select evicts `agent:cc-pm`), move to Todo, **clear the assignee**, and comment what's needed with the acceptance criteria embedded in the body (Pattern A), so the exec leg is self-contained. Only ever route a **leaf ticket** to cc-exec — never an epic (`type:epic` is an outcome closed by Aled when its children are done; see linear-conventions *Structure*).
+  - **Needs execution** — set `agent:cc-exec` (single-select evicts `agent:cc-pm`), move to Todo, **clear the assignee**, and comment what's needed with the acceptance criteria embedded in the body (Pattern A), so the exec leg is self-contained. Only ever route a **leaf ticket** to cc-exec — never an epic (`type:epic` is an outcome closed by Aled when its children are done; see linear-conventions *Structure*). Never promote a ticket whose *Notes for Aled to address* questions are still unresolved — park it in Refinement instead (see *Open-questions gate* under Refinement).
   - **Needs a human decision** — leave a clear comment and assign to Aled. The comment must @mention him (`@aledpritchard`) and lead with the specific action or decision needed, phrased so he can reply or act directly. Do not guess.
   - **Not actionable** — route to the right state (needs info, blocked, canceled) with a one-line reason. Moving a ticket to **Blocked** also sets priority **Urgent (1)**.
 
@@ -42,6 +42,7 @@ When refining a Backlog ticket, structure it before polishing its content:
 - **Restructure oversized tickets (propose-first).** A Backlog ticket too big for one PR is not refined as-is. Propose an epic + sub-task breakdown in a comment for Aled's approval, and wait — do not create sub-issues in bulk until he approves (the A1-3 pattern, made standard).
 - **Executor and gate check.** A ticket that mixes executors (human prerequisite + agent implementation) or requires more than one human gate at different stages must be split before routing to cc-exec. Propose the split in a comment (one `exec:human` prerequisite ticket blocking the implementation ticket, or one gate per ticket); wait for Aled's approval before creating sub-issues. If a split is genuinely impossible, flag it in a comment and assign Aled. See *Decomposing mixed-executor / multi-gate tickets* in linear-conventions.
 - **Assignee discipline.** Assign Aled at refinement **only** when the gaps comment contains a genuine question or decision for him; a no-gap refined ticket parks in **Refinement unassigned**. When routing a Todo ticket to cc-exec, clear the assignee. Any comment that assigns Aled must @mention him (`@aledpritchard`) and lead with the specific action or decision needed.
+- **Open-questions gate — never promote a ticket whose `Notes for Aled to address` is still open.** Before moving any ticket to Todo (and labelling `cc-exec`), check its body for a *Notes for Aled to address* section, or any equivalent open-questions / decisions block. Treat each bullet as unresolved unless a **later Aled comment answers it**. If any remain unanswered, **park the ticket in Refinement assigned to Aled** — do not promote — and make sure the gaps comment surfaces those exact questions. The ticket becomes promotable only once Aled's answers are applied to the body via the *Refinement comment sweep*. A Notes section Aled has **already answered** in comments is not blocking: apply the answers, then promote. This closes the silent gap where a ticket sits in Todo + `cc-exec` but is unworkable because its spec is still ambiguous (the APP-166 case), so the exec leg skips it at the eligibility scan and the work stalls unseen.
 
 ## Refinement comment sweep
 
@@ -49,7 +50,7 @@ Refinement is Aled's lane and is **read-only** to the pm leg — never re-refine
 
 - Apply his answers to the ticket body.
 - Reply confirming what changed.
-- Promote to Todo when he says it is ready (routing to cc-exec where execution is needed, per the rule above).
+- Promote to Todo when he says it is ready (routing to cc-exec where execution is needed, per the rule above) — and only once every *Notes for Aled to address* question is resolved, per the *Open-questions gate*.
 - Clear the assignee once the ask is resolved.
 
 Never act on a Refinement ticket that has no new comment from Aled.
