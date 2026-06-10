@@ -47,7 +47,7 @@ For each qualifying ticket:
 5. **Blocked path — CI failure or conflict.**
    If required CI checks are failing, checks are still running, or there is a merge conflict:
    - Move the ticket to **Blocked**.
-   - Set priority **1 (Urgent)**.
+   - Set priority **Urgent (1)**.
    - Set `exec:human` (evicts `agent:cc-pm`).
    - Assign Aled.
    - Add a comment @mentioning Aled that lists:
