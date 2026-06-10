@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import type { ManifestRecord, Domain, Status, ArtefactType } from "@/lib/manifest";
 import { SECTION_TYPES, SECTION_META } from "@/lib/manifest";
 import ArtefactCard from "@/components/ArtefactCard";
@@ -8,6 +8,7 @@ import FilterBar from "@/components/FilterBar";
 
 interface Props {
   artefacts: ManifestRecord[];
+  ownerArtefacts: ManifestRecord[];
 }
 
 const SECTION_HEADINGS: Record<"skill" | "task" | "routine", string> = {
@@ -16,11 +17,22 @@ const SECTION_HEADINGS: Record<"skill" | "task" | "routine", string> = {
   routine: "Routines",
 };
 
-export default function RepositoryPage({ artefacts }: Props) {
+export default function RepositoryPage({ artefacts, ownerArtefacts }: Props) {
   const [activeDomain, setActiveDomain] = useState<Domain | null>(null);
   const [activeStatus, setActiveStatus] = useState<Status | null>(null);
+  const [isOwner, setIsOwner] = useState(false);
 
-  const filtered = artefacts.filter((a) => {
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const key = params.get("key");
+    if (key && key === process.env.NEXT_PUBLIC_OWNER_KEY) {
+      setIsOwner(true);
+    }
+  }, []);
+
+  const displayArtefacts = isOwner ? ownerArtefacts : artefacts;
+
+  const filtered = displayArtefacts.filter((a) => {
     if (activeDomain && a.domain !== activeDomain) return false;
     if (activeStatus && a.status !== activeStatus) return false;
     return true;
@@ -116,6 +128,7 @@ export default function RepositoryPage({ artefacts }: Props) {
                           artefact={a}
                           sectionIndex={sectionIdx + 1}
                           cardIndex={i + 1}
+                          isOwner={isOwner}
                         />
                       ))}
                     </div>
