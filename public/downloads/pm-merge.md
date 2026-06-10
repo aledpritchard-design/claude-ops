@@ -55,6 +55,7 @@ For each qualifying ticket:
      - The PR link
      - What is needed to unblock
    - Do **not** merge. Do not close the PR. Leave the branch in place.
+   - For unexpected errors outside the merge scope (tool failures, infrastructure errors), call `issue-capture` to file a Backlog ticket.
 
 ## Guardrails
 

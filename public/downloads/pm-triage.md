@@ -79,6 +79,8 @@ For each such ticket, read its blocked-by relations and judge whether each block
 - Consequential or ambiguous calls go to Aled, never a guess.
 - Canon changes (editing linear-conventions etc.) are never made here — raise a ticket instead.
 
+**Duplicate issue-capture tickets.** On each run, scan the os.Claude Backlog for tickets with matching OPS:/FIX:/DRIFT: titles that describe the same problem (filed by `issue-capture` from multiple failure paths). Move the redundant one to Duplicate state, note which ticket is canonical in a comment, and link the two.
+
 **Blocker discipline.** Blocked-by relations are for genuine dependencies only: shared files that would conflict, artefacts that must exist first (assets, builds, merged tooling), or decisions that gate scope. Strategic sequencing — platform order, milestone order, "do this before that" — is carried by project milestones and Aled's promotion to Todo. Never encode sequencing preferences as blocks. Do not add a blocked-by relation merely because tickets are thematically sequential or because one would logically follow the other.
 
 **Repo-wide baseline tickets.** A ticket that touches many files across a repo (format pass, lint sweep, large-scale refactor) is a genuine dependency for any parallel ticket editing the same files. When such a baseline ticket is in flight (Todo → In Review), identify any simultaneously-actionable tickets that edit overlapping files and add blocked-by relations to them so they are not worked concurrently. Sequencing via blocks here prevents merge conflicts at the source, complementing CI and the merge queue.

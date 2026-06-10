@@ -107,6 +107,17 @@
     "_path": ".claude/skills/exec/SKILL.md"
   },
   {
+    "name": "issue-capture",
+    "type": "skill",
+    "domain": "ops",
+    "status": "done",
+    "gating": "public",
+    "downloadable": true,
+    "summary": "Inline-callable procedure that files a Backlog ticket in Apps / os",
+    "composed_of": [],
+    "_path": ".claude/skills/issue-capture/SKILL.md"
+  },
+  {
     "name": "linear-conventions",
     "type": "skill",
     "domain": "ops",
