@@ -20,7 +20,7 @@ A run is a loop. **Repeat the cycle below for one eligible ticket at a time, hig
 
 For each ticket:
 
-1. **Sync** — fetch and check out latest `main`, then cut a fresh `claude/`-prefixed branch for *this* ticket off it. Every ticket gets its own branch off current `main`, never off a previous ticket's branch (genuine dependencies are blocked-by relations, so a blocker is already merged before its dependent is eligible).
+1. **Sync** — fetch and check out latest `main`, then cut a fresh `claude/`-prefixed branch for *this* ticket off it. Every ticket gets its own branch off current `main`, never off a previous ticket's branch (genuine dependencies are blocked-by relations, so a blocker is already merged before its dependent is eligible). The branch name for each ticket should be `claude/<ticket-id>` (e.g. `claude/app-144`). When the session provides a pre-generated branch name, use it for the first ticket only; cut a fresh `claude/<ticket-id>` branch off `origin/main` for every subsequent ticket in the same run.
 2. **Claim** — move the ticket to In Progress and **clear the assignee**. This *is* the lock: a ticket In Progress under `agent:cc-exec` is being worked and is never re-grabbed. No separate lock label.
 3. Read the ticket, its embedded acceptance criteria (Pattern A), any PM comment, and — if this is a bounce — Aled's note.
 4. Run Claude Code on this ticket's branch. Open a PR. Never merge.
