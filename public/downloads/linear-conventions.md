@@ -73,7 +73,7 @@ Two workflows are in play, by team:
 
 **Refinement — Aled's lane.** Refinement holds tickets that have been refined and are parked awaiting his promotion to Todo (or his answer to an open question). It is the human refinement gate. Agents treat Refinement tickets as **read-only**: never re-refine, relabel, or re-route them — with one exception. A ticket where Aled has commented since the last pm/agent comment is a signal to act: the pm leg processes those comments as trusted instructions (applies his answers to the body, replies to confirm, promotes to Todo when he says ready, and clears the assignee once the ask is resolved). See *pm-triage* for the comment-sweep behaviour. A no-gap refined ticket parks here **unassigned**; a ticket carrying a genuine question for Aled is assigned to him (see the assignee rule under *Structure*).
 
-**Blocked.** Set by the exec leg when it hits an unresolvable blocker mid-run (no write access, a missing dependency or credential, a requirement too ambiguous to act on safely). The ticket leaves In Progress so the leg is not jammed, carries `agent:human`, and is assigned to Aled. He clears the blocker and moves it back to Todo to retry. Not the same as a blocked-by relation (a genuine dependency between tickets — see *Structure*).
+**Blocked.** Set by the exec leg when it hits an unresolvable blocker mid-run (no write access, a missing dependency or credential, a requirement too ambiguous to act on safely). The ticket leaves In Progress so the leg is not jammed, carries `agent:human`, and is assigned to Aled. He clears the blocker and moves it back to Todo to retry. **Any transition to Blocked sets priority Urgent (1)** — so blocked work is always visible at the top of the queue and never sits unnoticed. This applies to all engineering-workflow teams (careerOS, Apps, A1, Mr Pritchard); the Pipeline team has no Blocked state. Not the same as a blocked-by relation (a genuine dependency between tickets — see *Structure*).
 
 ## Labels
 
@@ -158,6 +158,24 @@ A well-formed ticket Aled hasn't yet refined contains:
 Set **assignee** (Aled only when the ticket carries a genuine question or decision for him — see the assignee rule under *Structure*; otherwise leave it unassigned), **state** (Backlog unless told otherwise), **priority** (`Urgent`/`High`/`Medium`/`Low`/`None` -> 1/2/3/4/0), and **labels** per the taxonomy.
 
 Issue numbers are auto-assigned by Linear (each team has its own key — COS, APP, PIPE, A1, MRP) — never invent them.
+
+## Decomposing mixed-executor / multi-gate tickets
+
+A ticket that mixes executor types or requires more than one human gate at different stages cannot be expressed cleanly in the build loop. Split it before routing — never after.
+
+**The two rules (new tickets only — no retroactive sweep of open mixed tickets):**
+
+1. **Split human-owned setup from agent implementation.** A discrete human-owned prerequisite (account creation, credential provisioning, a design or launch decision) becomes its own `exec:human` ticket, marked as blocking the implementation ticket.
+2. **One human gate per ticket.** If a ticket needs more than one human gate at different stages (provision-then-build, or build-then-approve-a-production-migration), split so each ticket has a single gate. A production data migration in particular gets its own ticket.
+
+**Trivial-enough threshold — leave bundled only when all three hold:**
+- Same executor throughout — no human↔agent switch.
+- Completable in the same session/PR with no external wait (no account, credential, third party, DNS, or another person).
+- Reversible and not separately approved (no production migration, launch, or irreversible action).
+
+Split when any one fails. Time is a tiebreaker, not the test — the governing question is "is there a real hand-off or gate?", not the clock.
+
+pm-triage enforces this at ticket intake: split multi-gate tickets, or flag when a split is not possible.
 
 ## Documents and the decision log
 
