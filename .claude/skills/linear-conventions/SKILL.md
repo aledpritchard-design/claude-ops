@@ -188,6 +188,12 @@ When an agent finishes a ticket:
 
 Aled reviews against the embedded criteria and moves it to Done himself. This keeps the human queue showing only actionable work — review is a state transition, not a separate piece of work. When writing a ticket an agent will execute, embed the acceptance criteria in the body so this works.
 
+**Non-repo criteria.** If a criterion covers an artefact outside the repo diff (e.g. a Linear document, Figma frame, deployed URL), mark it with `[human-verify]`. qa-review will note it as "marked for human verification" and skip it rather than flag it as ambiguous. Exec must still complete the action; the marker tells QA not to chase it in the diff. Example:
+
+```
+- [human-verify] Decision log entry written in osclaude.log-decisions (Linear doc)
+```
+
 ## Structure: hierarchy, milestones, blocks
 
 Three orthogonal axes carry how work is organised. Keep them distinct — conflating them is what makes the board hard to read.

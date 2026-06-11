@@ -14,7 +14,7 @@ Read the issue and its comments, then:
 
 - Set state, priority, and links. Apply missing `type:` / `work:` labels per linear-conventions. Never move an unrefined ticket out of Backlog; never leave a refined, actionable one stuck in it.
 - Decide whether the ticket needs execution (code):
-  - **Needs execution** — set `agent:cc-exec` (single-select evicts `agent:cc-pm`), move to Todo, **clear the assignee**, and comment what's needed with the acceptance criteria embedded in the body (Pattern A), so the exec leg is self-contained. Only ever route a **leaf ticket** to cc-exec — never an epic (`type:epic` is an outcome closed by Aled when its children are done; see linear-conventions *Structure*). Never promote a ticket whose *Notes for Aled to address* questions are still unresolved — park it in Refinement instead (see *Open-questions gate* under Refinement).
+  - **Needs execution** — before routing to cc-exec, check whether the ticket body signals exec ineligibility: phrases such as "exec loop can't do this", "account-level", "Vercel dashboard", "DNS provider", or any discrete action requiring a third-party account or external system access the exec loop cannot reach. If present, route to `agent:human` instead, @mention Aled (`@aledpritchard`), and state the specific human action required — routing to cc-exec when the body says it can't deliver wastes a claim cycle and a Blocked transition. If no such signal is present: set `agent:cc-exec` (single-select evicts `agent:cc-pm`), move to Todo, **clear the assignee**, and comment what's needed with the acceptance criteria embedded in the body (Pattern A), so the exec leg is self-contained. Only ever route a **leaf ticket** to cc-exec — never an epic (`type:epic` is an outcome closed by Aled when its children are done; see linear-conventions *Structure*). Never promote a ticket whose *Notes for Aled to address* questions are still unresolved — park it in Refinement instead (see *Open-questions gate* under Refinement).
   - **Needs a human decision** — leave a clear comment and assign to Aled. The comment must @mention him (`@aledpritchard`) and lead with the specific action or decision needed, phrased so he can reply or act directly. Do not guess.
   - **Not actionable** — route to the right state (needs info, blocked, canceled) with a one-line reason. Moving a ticket to **Blocked** also sets priority **Urgent (1)**.
 
@@ -54,6 +54,23 @@ Refinement is Aled's lane and is **read-only** to the pm leg — never re-refine
 - Clear the assignee once the ask is resolved.
 
 Never act on a Refinement ticket that has no new comment from Aled.
+
+## Direct-promotion: claude-ops skill tickets
+
+A refined, no-gap skill ticket in the **os.Claude project** may skip the Refinement park and be promoted straight to Todo, so `SKILL.md` changes do not wait on Aled's manual promotion.
+
+**Scope.** A ticket qualifies when it sits in the **os.Claude project** and its description plainly describes a claude-ops skill being created or updated — the kind of edit that lands as a `SKILL.md` PR. This is a judgement from the description, not a mechanical rule — if it is not obviously a skill create/update, treat it as out of scope and park in Refinement as normal. A ticket outside os.Claude is never in scope.
+
+**Promotion.** When such a ticket is refined with no open gaps (no unresolved *Notes for Aled to address*) and no `Human gate: required` flag:
+- Set `agent:cc-exec` (evicts `cc-pm`), move Backlog → Todo, leave the assignee clear.
+- Ensure the acceptance criteria are embedded in the body (Pattern A) before promoting.
+- The ticket then flows exec → qa autonomously.
+
+**Gap / flag exception.** An open gap or a `Human gate: required` flag on a skill ticket is never bypassed — park it in Refinement assigned to Aled per the normal rule.
+
+**Guards.** Never the Pipeline team. Never `type:epic`. Never tickets already In Progress or In Review. Promotion only sets Todo; it does not claim the exec lock.
+
+**Suggest-mode (starting state).** This section launches in suggest-mode: propose the promotion as a comment assigned to Aled rather than acting directly. Graduate to acting unattended once a clean soak confirms the pattern is reliable.
 
 ## Blocked-state sweep
 
