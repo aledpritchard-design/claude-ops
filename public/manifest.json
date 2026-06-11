@@ -107,6 +107,17 @@
     "_path": ".claude/skills/exec/SKILL.md"
   },
   {
+    "name": "github-conventions",
+    "type": "skill",
+    "domain": "ops",
+    "status": "done",
+    "gating": "public",
+    "downloadable": true,
+    "summary": "Conventions for GitHub in Aled's system — repos in scope, branch naming, PR structure, and GitHub MCP usage",
+    "composed_of": [],
+    "_path": ".claude/skills/github-conventions/SKILL.md"
+  },
+  {
     "name": "issue-capture",
     "type": "skill",
     "domain": "ops",
@@ -127,6 +138,17 @@
     "summary": "How to create, label, route, and validate work in Aled Pritchard's Linear workspace (teams: careerOS, Apps, Pipeline,…",
     "composed_of": [],
     "_path": ".claude/skills/linear-conventions/SKILL.md"
+  },
+  {
+    "name": "operating-model",
+    "type": "skill",
+    "domain": "ops",
+    "status": "done",
+    "gating": "public",
+    "downloadable": true,
+    "summary": "The canonical reference for how Aled's AI operating layer is structured and deployed — what a skill is vs a task vs a…",
+    "composed_of": [],
+    "_path": ".claude/skills/operating-model/SKILL.md"
   },
   {
     "name": "ops-retro",
@@ -151,6 +173,17 @@
     "_path": ".claude/skills/ops-sync/SKILL.md"
   },
   {
+    "name": "pm-coordinate",
+    "type": "skill",
+    "domain": "ops",
+    "status": "done",
+    "gating": "public",
+    "downloadable": true,
+    "summary": "Cross-board PM coordination for Aled's delivery projects",
+    "composed_of": [],
+    "_path": ".claude/skills/pm-coordinate/SKILL.md"
+  },
+  {
     "name": "pm-merge",
     "type": "skill",
     "domain": "ops",
@@ -160,6 +193,17 @@
     "summary": "Merge approved pull requests on behalf of the PM agent",
     "composed_of": [],
     "_path": ".claude/skills/pm-merge/SKILL.md"
+  },
+  {
+    "name": "pm-plan",
+    "type": "skill",
+    "domain": "ops",
+    "status": "done",
+    "gating": "public",
+    "downloadable": true,
+    "summary": "Prioritisation and focus management for Aled's delivery teams",
+    "composed_of": [],
+    "_path": ".claude/skills/pm-plan/SKILL.md"
   },
   {
     "name": "pm-triage",
@@ -182,5 +226,27 @@
     "summary": "Review a Claude Code pull request for Aled and write a plain-language verdict he can act on without reading the code",
     "composed_of": [],
     "_path": ".claude/skills/qa-review/SKILL.md"
+  },
+  {
+    "name": "sanity-conventions",
+    "type": "skill",
+    "domain": "ops",
+    "status": "done",
+    "gating": "public",
+    "downloadable": true,
+    "summary": "Conventions for Sanity CMS in Aled's system — projects in scope, schema setup, naming standards, and deployment",
+    "composed_of": [],
+    "_path": ".claude/skills/sanity-conventions/SKILL.md"
+  },
+  {
+    "name": "vercel-conventions",
+    "type": "skill",
+    "domain": "ops",
+    "status": "done",
+    "gating": "public",
+    "downloadable": true,
+    "summary": "Conventions for Vercel in Aled's system — projects in scope, deployment setup, environment variable naming, and what …",
+    "composed_of": [],
+    "_path": ".claude/skills/vercel-conventions/SKILL.md"
   }
 ]

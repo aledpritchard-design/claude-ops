@@ -132,6 +132,33 @@ Concurrency: the exec leg only picks up `agent:cc-exec` tickets in **Todo**, and
 
 Scope: the loop runs across delivery projects only. It must never touch the Pipeline team (Network / Roles / Advisory / Pitches) — that's relationship and business-development work, not delivery.
 
+## Autonomous-loop conventions
+
+These conventions let the Claude Code loop run with Aled in the path only by exception. They govern ticket entry, the human-review signal, and the sign-off gate. pm-triage, cc-exec, qa-review, and pm-merge all read them.
+
+### Default executor label on Backlog entry
+
+A delivery ticket created in Backlog carries `agent:cc-pm` by default, so triage picks it up without Aled hand-labelling. A ticket that is Aled's own — a decision, a human task, something he wants to hold — carries `agent:human` instead and is assigned to him; it is never auto-routed. This default never applies to the Pipeline team; epics carry no agent label.
+
+### The human-gate flag
+
+A ticket's body may carry a single explicit line declaring whether Aled's review is required:
+
+```
+Human gate: required — visual review
+Human gate: required — decision
+Human gate: required — info gap
+Human gate: none
+```
+
+The flag lives in the ticket body (canonical, Pattern A), not in a label. **Absence is permission** — no flag, or `Human gate: none`, means the ticket is safe to flow autonomously. Only an explicit `Human gate: required` pulls Aled in.
+
+**Who sets it:** pm-triage writes the flag during refinement whenever the work needs Aled's visual review, a decision, or carries an info gap it cannot close.
+
+**Who reads it:**
+- **qa-review** auto-approves (sets `agent:cc-pm`) only when the ticket is unflagged and its pass is clean. A flagged ticket is handed to Aled. *(Auto-approval activates once APP-186 — reviewer independence — ships; until then, qa-review assigns Aled as today.)*
+- **pm-merge** is unchanged — it acts only on the `agent:cc-pm` signal, whoever set it.
+
 ## Pattern A — folded validation (the core working discipline)
 
 This is how build/agent work is validated, and it's non-negotiable:
@@ -142,7 +169,7 @@ When an agent finishes a ticket:
 
 1. It checks its work against the criteria embedded in the ticket body.
 2. It moves the ticket to **In Review**. In the Claude Code loop the exec agent leaves the ticket unassigned for cc-qa, which assigns Aled once review is done; a solo agent with no QA leg reassigns Aled itself.
-3. It does **NOT** mark the ticket **Done**. Sign-off is human, always.
+3. It does **NOT** mark the ticket **Done**. Sign-off is human for flagged work (`Human gate: required`); unflagged work in the Claude Code loop is signed off by an independent QA pass. *(Requires APP-186 for auto-approval to be active — until then, qa-review assigns Aled as today.)*
 
 Aled reviews against the embedded criteria and moves it to Done himself. This keeps the human queue showing only actionable work — review is a state transition, not a separate piece of work. When writing a ticket an agent will execute, embed the acceptance criteria in the body so this works.
 
@@ -158,7 +185,7 @@ Three orthogonal axes carry how work is organised. Keep them distinct — confla
 
 * **Hierarchy = grouping.** `type:epic` is an outcome, carried as a parent issue. Epics never carry `agent:cc-exec`, are never claimed by the exec leg, and are closed only by Aled when their children are done. `type:feature` / `type:story` are capability slices under an epic — parents of tasks where the work is multi-step. `type:task` is the executable unit. **The exec leg only ever claims leaf tickets, never an epic.**
 * **Milestones = ordering.** Milestones are the phases within a project (the pattern: app.fitness M1–M6, os.Claude M1–M3). Strategic sequence — platform order, phase order, "do this before that" — lives in milestones and in Aled's promotion to Todo, never in blocks. Every refined leaf ticket gets a milestone where the project has them.
-* **Blocks = genuine dependency only.** A blocked-by relation means the work technically cannot start until the blocker is Done or Canceled (shared files that would conflict, an artefact that must exist first, a decision that gates scope). Never use a block to express sequencing preference — that is what milestones are for. Unchanged from the blocker discipline below; see *The three execution lanes → Blocker discipline*.
+* **Blocks = genuine dependency only.** A blocked-by relation means the work technically cannot start until the blocker is Done or Canceled (shared files that would conflict, an artefact that must exist first, a decision that gates scope). Never use a block to express sequencing preference — that is what milestones are for. The exec leg may add a blocked-by relation at runtime when it discovers an undeclared but genuine dependency (see *exec* skill, Blocked fail-safe); this is legitimate and is how pm-merge knows to auto-unblock the ticket after the blocker merges. See also *Blocker discipline* below.
 * **Assignee = a human action is needed.** Assign Aled to a ticket only when it carries a genuine question, decision, or verification that is his to make. Never assign him merely because work is parked — the Refinement state already carries the parked-for-Aled gate, and a blanket-assigned queue makes "assigned to Aled" meaningless as a signal. (In the Claude Code loop the assignee is deliberately clear through exec and review; it becomes Aled only when cc-qa finishes its review — at which point his approval or follow-up genuinely is the next action.) Any comment that assigns Aled must @mention him (`@aledpritchard`) and lead with the specific action or decision needed, phrased so he can reply or act directly.
 
 ## When creating tickets — the standard shape
@@ -231,6 +258,18 @@ When sequencing tickets, mark sequential dependencies explicitly (one Claude Cod
 
 **Blocker discipline.** Blocked-by relations are for genuine dependencies only: shared files that would conflict, artefacts that must exist first (assets, builds, merged tooling), or decisions that gate scope. Strategic sequencing — platform order, milestone order, "do this before that" — is carried by project milestones and Aled's promotion to Todo, not by blocks. Never add a blocked-by relation merely because tickets are thematically sequential. The exec leg skips ineligible (blocked) tickets rather than stalling; a spurious block silently delays delivery.
 
+## Enumerating issues at scale
+
+`list_issues` always returns full `description` bodies — there is no field-projection option. A query that returns more than ~15–20 issues will overflow the tool-result token budget, get dumped to a file, and force a mid-run workaround.
+
+**Rules for list-heavy skills (pm-triage, ops-sync, ops-retro, exec, and any routine that scans many tickets):**
+
+1. **Query as narrowly as the job allows.** Always filter by `label` + `state` + `project`/`team`. Never call `list_issues` with only a state filter on a large project.
+2. **Prefer per-label/per-state probes.** Query `cc-exec`+`Blocked`, then `cc-pm`+`Blocked` separately rather than all Blocked in one call. Small, targeted calls stay within the token budget.
+3. **For a genuinely broad scan, delegate enumeration.** When a large set is unavoidable, spawn a subagent to fetch the list and return only `id`, `title`, `status`, `labels`, `assignee`, `updatedAt` — keeping full descriptions out of the main context.
+
+This is a workaround for an MCP limitation (Linear MCP has no field-projection parameter). If Linear's MCP adds projection in future, this convention can be relaxed.
+
 ## Tone for ticket and doc content
 
 Aled's tone of voice applies to everything written into Linear: calm, precise, structurally confident. Sentence case. No exclamation marks. No marketing-speak. Outcome before adjective. British spelling. (Full reference: `cos.tov`.)
@@ -244,6 +283,7 @@ Aled's tone of voice applies to everything written into Linear: calm, precise, s
 - [ ] Assignee — Aled only where a genuine human action (question, decision, verification) is needed, not as a blanket gate?
 - [ ] Hierarchy and milestone set? (Leaf ticket under the right epic/feature; milestone assigned where the project has them. Epics never carry `agent:cc-exec`.)
 - [ ] For agent tickets: acceptance criteria embedded in the body (Pattern A)?
+- [ ] Human-gate flag set in body? (`Human gate: required — reason` or `Human gate: none` — or absent, which also means none)
 - [ ] Notes section listing open questions, if the brief isn't fully defined?
 - [ ] Consequential decision made? -> decision-log entry added.
 - [ ] Skill/task/agent artefact content? -> edit it in `claude-ops`, not the Linear reference copy.
