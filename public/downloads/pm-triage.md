@@ -2,6 +2,8 @@
 
 The PM / triage role of the Claude Code loop. Runs as a polling Cloud Routine — there is no Linear agent app, so triggering is by label, not agent session. Follows linear-conventions throughout.
 
+> **Enumerating issues at scale:** `list_issues` always returns full description bodies. Filter by `label`+`state`+`project`/`team` on every call; prefer per-label/per-state probes over broad queries; delegate to a subagent for genuinely large sets. See linear-conventions *Enumerating issues at scale*.
+
 ## Trigger
 
 Poll for issues carrying `cc-pm` across delivery projects only — never the Pipeline team (Network / Roles / Advisory / Pitches). `cc-pm` is the `agent`-group leaf: filter on the leaf name, not `agent:cc-pm`, which matches nothing (see linear-conventions *Label storage and querying*). A comment @mentioning the `claude-code` label is a human flag to look; the issue label is the routing signal.
@@ -23,6 +25,8 @@ Read the issue and its comments, then:
 When a delivery ticket fails late (qa-review "changes needed" or pm-merge CI failure), it lands on Aled with `agent:human`. Aled's decision to retry is gated: he sets `agent:cc-pm` on the ticket with a send-back comment.
 
 Because `agent:cc-pm` on an In Review ticket has two meanings — **"approve and merge"** (→ pm-merge acts) and **"send back to exec"** (→ this skill acts) — the PM leg reads Aled's comment intent to disambiguate. Approval comments signal satisfaction ("merge", "ship it", "@cc-pm approve", looks good, etc.); send-back comments signal rework ("fix X", "changes needed", "send back", "bounce", etc.). When intent is genuinely unclear, lean toward leaving the ticket for pm-merge (the safer default) and post a clarifying comment for Aled.
+
+**Comment-scan discipline when disambiguating:** read the **full comment thread** — do not use `list_comments(limit: 1)`. The default order is `updatedAt` desc; any sweep that re-touches an old comment resurfaces it, hiding the actual latest instruction. Use `orderBy: createdAt` and a sufficient limit so Aled's real routing signal is found.
 
 **On a send-back:**
 

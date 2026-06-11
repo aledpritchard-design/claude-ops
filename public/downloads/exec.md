@@ -31,6 +31,8 @@ Then re-run the eligibility scan and take the next ticket. **End the run** when 
 
 **Blocked (fail-safe).** If you hit a blocker you cannot resolve — push rejected / no write access, a missing dependency or credential, or a requirement too ambiguous to act on safely — do **not** leave the ticket In Progress and do **not** open a half-baked PR. Move it to **Blocked**, set priority **Urgent (1)**, set `agent:human` (evicts `agent:cc-exec`), assign Aled, and comment plainly what blocked you and what is needed to clear it. As in step 6, pass the **complete** label set to `save_issue` — `labels` replaces all existing labels, it does not append. This empties In Progress so the leg is not jammed and the next ticket can run, and it surfaces the blocker to Aled. Aled clears the blocker and moves the ticket back to Todo to retry. Within a run, a Blocked outcome ends only *that ticket's* cycle — the run continues to the next eligible ticket. For unexpected errors outside any ticket's scope (infrastructure failures, tool errors, ops-layer gaps), call `issue-capture` to file a Backlog ticket.
 
+**Adding a blocked-by at runtime.** When the blocker is a specific unmerged ticket (a shared-file conflict or an artefact that must exist first), also add a formal `blockedBy` relation from this ticket to the blocking ticket via `save_issue` with `blockedBy: [blocking-ticket-id]`, and note the relation in the blocker comment. This lets pm-merge's unblock-dependents step auto-unblock the ticket once the blocker merges, rather than requiring Aled to move it manually.
+
 **Bounce:** Aled moves In Review → **Todo** with a note; the next run re-picks it and iterates on the existing PR. (Todo, not In Progress, so In Progress always means "running now.")
 
 ## Guardrails

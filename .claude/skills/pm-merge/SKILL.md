@@ -25,6 +25,12 @@ label change to `agent:cc-pm` plus an @cc-pm comment is the gate signal. Runs as
 Poll all delivery projects for issues in **In Review** carrying `cc-pm`. Skip if none. Note:
 `cc-pm` is the leaf name inside the `agent` group — filter by that leaf, never the `agent:cc-pm` display form, which matches nothing (see linear-conventions *Label storage and querying*).
 
+## Approval verification
+
+The `cc-pm` label on an In Review ticket is the approval signal. If you read comments to verify intent (e.g. to disambiguate "approve and merge" from "send back"), **scan the full thread** — never rely on the single most-recently-updated comment.
+
+**Why:** `list_comments` orders by `updatedAt` desc by default. Any subsequent comment sweep (pm-triage, pm-coordinate) can re-touch an older comment and bump its `updatedAt` above Aled's `[cc-pm] approved` reply. `limit: 1` then returns the re-touched comment, not the approval. The fix: use `orderBy: createdAt` and a high enough limit, or scan the thread for the explicit `[cc-pm] approved` signal rather than reading only the top result.
+
 ## Behaviour
 
 For each qualifying ticket:

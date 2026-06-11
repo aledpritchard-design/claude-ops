@@ -1,9 +1,3 @@
----
-name: pm-coordinate
-description: Cross-board PM coordination for Aled's delivery projects. Use whenever running the pm-coordinate routine, or when PM comments have landed on tickets across any state and need to be processed. Sweeps all delivery projects for new Aled/agent comments since the last pm-coordinate run, applies decisions, advances handoffs, unblocks cleared dependencies, and surfaces structural issues (duplicates, missing parents, orphaned milestones) as proposal comments only. Never merges, marks Done, or touches Pipeline. Trigger this rather than ad-hoc coordination so decisions applied to ticket bodies, routing changes, and structural proposals follow consistent conventions.
-license: Proprietary — Aled Pritchard workspace use.
----
-
 # pm-coordinate
 
 The cross-board PM coordination skill. Runs as a scheduled Cowork task on the Linear connector. Follows `linear-conventions` throughout.

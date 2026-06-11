@@ -2,6 +2,8 @@
 
 Keeps skill and task artefacts in parity between **Claude** (the deployed, executing copies) and the **claude-ops repo** (canon). The 2026-06-05 canon decision made claude-ops the source of truth for skill, task, and agent artefact *content*; this skill enforces that, so [agents.aledpritchard.com](http://agents.aledpritchard.com) always builds from complete, current source. Follows `linear-conventions`. Runs as a scheduled Cowork task. **Repo wins; never pushes to claude-ops directly; never deletes.**
 
+> **Enumerating issues at scale:** `list_issues` always returns full description bodies. Filter by `label`+`state`+`project`/`team` on every call; prefer per-label/per-state probes over broad queries; delegate to a subagent for genuinely large sets. See linear-conventions *Enumerating issues at scale*.
+
 ## Why this matters
 
 Nothing else enforces parity, and drift is silent. A skill edited in Claude and never committed, or committed and never redeployed, only surfaces when the web page builds from stale or missing source. The dangerous case is an artefact that exists in Claude but not in the repo: the page is built from the repo, so that artefact simply never appears. This audit catches both directions before the page does.
