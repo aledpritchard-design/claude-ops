@@ -15,6 +15,7 @@ Skills live in `.claude/skills/`. Claude Code discovers and loads them automatic
 | `pm-coordinate` | cc-pm (coordination leg): sweeps all delivery projects for new comments, applies decisions, advances handoffs, auto-unblocks cleared dependencies, surfaces structural proposals. Never merges or marks Done. |
 | `pm-merge` | cc-pm (merge leg): squash-merges approved PRs, deletes branches, marks Done. Gated by Aled's cc-pm approval signal. |
 | `ops-sync` | Artefact parity audit: keeps skills and tasks in sync between Claude (deployed) and this repo (canon). Repo wins; flags uncommitted Claude-side artefacts for Aled. Deployed as a Cowork scheduled task. |
+| `operating-model` | Contextual reference: what a skill / task / routine / agent is, how they bundle, the loop topology, and the skill-or-task decision test. Read-only canon — no trigger or behaviour loop. |
 
 ## Source of truth
 
