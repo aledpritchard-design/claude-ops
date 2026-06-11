@@ -39,6 +39,8 @@ Working from the isolated inputs above, assess the change against each acceptanc
 2. **Post the same verdict comment on the GitHub PR** (so it's visible where Aled reviews and approves). Begin the comment with `[qa-review] HEAD: <sha7>`.
 3. **If the PR is a draft, mark it as Ready for Review** — draft signals WIP; a clean QA pass signals it's awaiting human sign-off. Skip this step if the PR is already non-draft.
 
+**Notes for Aled — check the thread before flagging open.** Before writing the verdict, for any ticket whose body carries a *Notes for Aled to address* section (or any equivalent open-questions block): scan the **full comment thread** (`orderBy: createdAt`, sufficient limit — see linear-conventions *Comment ordering gotcha*) for Aled's answers or pm-triage notes that record his decision. A note is unresolved **only** if no later comment answers it. Do not flag it as open if Aled already answered it in thread. When a note is answered, the verdict states the decision was resolved (citing the answering comment) rather than asking Aled to re-confirm.
+
 Verdict comes in one of two modes:
 
 - **Clean** — a summary of what was done plus explicit confirmation it meets the DoD / success criteria. Enough for Aled to approve.
