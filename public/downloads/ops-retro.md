@@ -4,6 +4,8 @@ A retro routine for the operating system itself. It turns friction — encounter
 
 There is no intermediate log or inbox. Recommendations go straight into the os.Claude Backlog, deduped against what's already there.
 
+> **Enumerating issues at scale:** `list_issues` always returns full description bodies. Filter by `label`+`state`+`project`/`team` on every call; prefer per-label/per-state probes over broad queries; delegate to a subagent for genuinely large sets. See linear-conventions *Enumerating issues at scale*.
+
 ## Two entry points, one behaviour
 
 1. Embedded — the final step of another skill points here: "On finish, propose os.Claude Backlog tickets for any friction, per the ops-retro skill." That run files its own findings.
