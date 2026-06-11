@@ -24,6 +24,8 @@ This rule guards against two PM legs touching the same ticket. pm-coordinate's s
 
 **Watermark:** for each ticket, find pm-coordinate's most recent comment. Only comments posted *after* that watermark from Aled (or from any other pm leg with new content) are candidates. If no prior pm-coordinate comment exists on the ticket, the beginning of the ticket's history is the watermark.
 
+**Comment ordering — `list_comments` uses `updatedAt` desc by default.** Any skill that re-touches a comment (edits it, adds a reaction, or references it in a sweep) bumps its `updatedAt` — which resurfaces it at the top of the next query. `limit: 1` therefore does **not** reliably return the chronologically latest comment; it returns the most recently *touched* comment. When scanning for the watermark or Aled's latest instruction, use `orderBy: createdAt` and a sufficient limit so the correct comment is found.
+
 ## Behaviour
 
 The run executes three passes in sequence.

@@ -26,6 +26,8 @@ When a delivery ticket fails late (qa-review "changes needed" or pm-merge CI fai
 
 Because `agent:cc-pm` on an In Review ticket has two meanings — **"approve and merge"** (→ pm-merge acts) and **"send back to exec"** (→ this skill acts) — the PM leg reads Aled's comment intent to disambiguate. Approval comments signal satisfaction ("merge", "ship it", "@cc-pm approve", looks good, etc.); send-back comments signal rework ("fix X", "changes needed", "send back", "bounce", etc.). When intent is genuinely unclear, lean toward leaving the ticket for pm-merge (the safer default) and post a clarifying comment for Aled.
 
+**Comment-scan discipline when disambiguating:** read the **full comment thread** — do not use `list_comments(limit: 1)`. The default order is `updatedAt` desc; any sweep that re-touches an old comment resurfaces it, hiding the actual latest instruction. Use `orderBy: createdAt` and a sufficient limit so Aled's real routing signal is found.
+
 **On a send-back:**
 
 1. Relabel `agent:cc-exec` (evicts `agent:cc-pm`).

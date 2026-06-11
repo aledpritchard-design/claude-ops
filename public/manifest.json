@@ -107,6 +107,17 @@
     "_path": ".claude/skills/exec/SKILL.md"
   },
   {
+    "name": "github-conventions",
+    "type": "skill",
+    "domain": "ops",
+    "status": "done",
+    "gating": "public",
+    "downloadable": true,
+    "summary": "Conventions for GitHub in Aled's system — repos in scope, branch naming, PR structure, and GitHub MCP usage",
+    "composed_of": [],
+    "_path": ".claude/skills/github-conventions/SKILL.md"
+  },
+  {
     "name": "issue-capture",
     "type": "skill",
     "domain": "ops",
@@ -215,5 +226,27 @@
     "summary": "Review a Claude Code pull request for Aled and write a plain-language verdict he can act on without reading the code",
     "composed_of": [],
     "_path": ".claude/skills/qa-review/SKILL.md"
+  },
+  {
+    "name": "sanity-conventions",
+    "type": "skill",
+    "domain": "ops",
+    "status": "done",
+    "gating": "public",
+    "downloadable": true,
+    "summary": "Conventions for Sanity CMS in Aled's system — projects in scope, schema setup, naming standards, and deployment",
+    "composed_of": [],
+    "_path": ".claude/skills/sanity-conventions/SKILL.md"
+  },
+  {
+    "name": "vercel-conventions",
+    "type": "skill",
+    "domain": "ops",
+    "status": "done",
+    "gating": "public",
+    "downloadable": true,
+    "summary": "Conventions for Vercel in Aled's system — projects in scope, deployment setup, environment variable naming, and what …",
+    "composed_of": [],
+    "_path": ".claude/skills/vercel-conventions/SKILL.md"
   }
 ]

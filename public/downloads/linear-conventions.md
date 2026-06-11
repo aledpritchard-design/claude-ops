@@ -270,6 +270,12 @@ When sequencing tickets, mark sequential dependencies explicitly (one Claude Cod
 
 This is a workaround for an MCP limitation (Linear MCP has no field-projection parameter). If Linear's MCP adds projection in future, this convention can be relaxed.
 
+## Comment ordering gotcha — list_comments updatedAt reordering
+
+`list_comments` orders by `updatedAt` desc by default. Any skill that re-touches a comment (edits it, adds a reply, or scans it in a sweep) bumps its `updatedAt` — which resurfaces it at the top of the next query. This means `limit: 1` does **not** reliably return the chronologically latest comment; it returns the most recently *touched* comment.
+
+**Rule:** Any skill that reads comments to verify an approval signal, routing intent, or watermark position must use `orderBy: createdAt` and a sufficient limit (or scan the full thread), never `limit: 1` with default ordering. This applies to pm-merge (approval check), pm-triage (send-back disambiguation), pm-coordinate (watermark), and any other skill reading comment state for a decision.
+
 ## Tone for ticket and doc content
 
 Aled's tone of voice applies to everything written into Linear: calm, precise, structurally confident. Sentence case. No exclamation marks. No marketing-speak. Outcome before adjective. British spelling. (Full reference: `cos.tov`.)
