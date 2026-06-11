@@ -229,6 +229,18 @@ When sequencing tickets, mark sequential dependencies explicitly (one Claude Cod
 
 **Blocker discipline.** Blocked-by relations are for genuine dependencies only: shared files that would conflict, artefacts that must exist first (assets, builds, merged tooling), or decisions that gate scope. Strategic sequencing — platform order, milestone order, "do this before that" — is carried by project milestones and Aled's promotion to Todo, not by blocks. Never add a blocked-by relation merely because tickets are thematically sequential. The exec leg skips ineligible (blocked) tickets rather than stalling; a spurious block silently delays delivery.
 
+## Enumerating issues at scale
+
+`list_issues` always returns full `description` bodies — there is no field-projection option. A query that returns more than ~15–20 issues will overflow the tool-result token budget, get dumped to a file, and force a mid-run workaround.
+
+**Rules for list-heavy skills (pm-triage, ops-sync, ops-retro, exec, and any routine that scans many tickets):**
+
+1. **Query as narrowly as the job allows.** Always filter by `label` + `state` + `project`/`team`. Never call `list_issues` with only a state filter on a large project.
+2. **Prefer per-label/per-state probes.** Query `cc-exec`+`Blocked`, then `cc-pm`+`Blocked` separately rather than all Blocked in one call. Small, targeted calls stay within the token budget.
+3. **For a genuinely broad scan, delegate enumeration.** When a large set is unavoidable, spawn a subagent to fetch the list and return only `id`, `title`, `status`, `labels`, `assignee`, `updatedAt` — keeping full descriptions out of the main context.
+
+This is a workaround for an MCP limitation (Linear MCP has no field-projection parameter). If Linear's MCP adds projection in future, this convention can be relaxed.
+
 ## Tone for ticket and doc content
 
 Aled's tone of voice applies to everything written into Linear: calm, precise, structurally confident. Sentence case. No exclamation marks. No marketing-speak. Outcome before adjective. British spelling. (Full reference: `cos.tov`.)
