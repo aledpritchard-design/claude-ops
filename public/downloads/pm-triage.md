@@ -2,6 +2,8 @@
 
 The PM / triage role of the Claude Code loop. Runs as a polling Cloud Routine — there is no Linear agent app, so triggering is by label, not agent session. Follows linear-conventions throughout.
 
+> **Enumerating issues at scale:** `list_issues` always returns full description bodies. Filter by `label`+`state`+`project`/`team` on every call; prefer per-label/per-state probes over broad queries; delegate to a subagent for genuinely large sets. See linear-conventions *Enumerating issues at scale*.
+
 ## Trigger
 
 Poll for issues carrying `cc-pm` across delivery projects only — never the Pipeline team (Network / Roles / Advisory / Pitches). `cc-pm` is the `agent`-group leaf: filter on the leaf name, not `agent:cc-pm`, which matches nothing (see linear-conventions *Label storage and querying*). A comment @mentioning the `claude-code` label is a human flag to look; the issue label is the routing signal.

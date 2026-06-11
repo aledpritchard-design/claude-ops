@@ -1,6 +1,6 @@
 ---
 name: github-conventions
-description: Conventions for GitHub in Aled's system — repos in scope, branch naming, PR structure, and GitHub MCP usage. Read before any operation that touches GitHub: creating repos, branches, PRs, or using the GitHub MCP tools. Grown as the conventions solidify.
+description: "Conventions for GitHub in Aled's system — repos in scope, branch naming, PR structure, and GitHub MCP usage. Read before any operation that touches GitHub: creating repos, branches, PRs, or using the GitHub MCP tools. Grown as the conventions solidify."
 ---
 
 # github-conventions
