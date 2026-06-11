@@ -96,6 +96,17 @@
     "_path": ".claude/skills/cos-truth-capture/SKILL.md"
   },
   {
+    "name": "delivery-loop",
+    "type": "skill",
+    "domain": "ops",
+    "status": "done",
+    "gating": "public",
+    "downloadable": true,
+    "summary": "Driver routine for the full Claude Code delivery loop",
+    "composed_of": [],
+    "_path": ".claude/skills/delivery-loop/SKILL.md"
+  },
+  {
     "name": "exec",
     "type": "skill",
     "domain": "ops",
