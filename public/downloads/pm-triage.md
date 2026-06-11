@@ -4,9 +4,9 @@ The PM / triage role of the Claude Code loop. Runs as a polling Cloud Routine �
 
 ## Trigger
 
-Poll for issues carrying `agent:cc-pm` across delivery projects only — never the Pipeline team (Network / Roles / Advisory / Pitches). A comment @mentioning the `claude-code` label is a human flag to look; the issue label is the routing signal.
+Poll for issues carrying `cc-pm` across delivery projects only — never the Pipeline team (Network / Roles / Advisory / Pitches). `cc-pm` is the `agent`-group leaf: filter on the leaf name, not `agent:cc-pm`, which matches nothing (see linear-conventions *Label storage and querying*). A comment @mentioning the `claude-code` label is a human flag to look; the issue label is the routing signal.
 
-The run also revisits tickets in **Blocked** carrying any `agent:*` label (not only cc-pm), to catch blockers that have since cleared — see *Blocked-state sweep* below. **In Progress** is never touched. **In Review** tickets are normally skipped — with one exception: In Review tickets carrying `agent:cc-pm` may carry a send-back instruction from Aled and must be disambiguated (see *Send-back routing* below).
+The run also revisits tickets in **Blocked** carrying any `agent`-group label (any leaf — `cc-pm`, `cc-exec`, `cc-qa`, `human`, …), to catch blockers that have since cleared — see *Blocked-state sweep* below. **In Progress** is never touched. **In Review** tickets are normally skipped — with one exception: In Review tickets carrying `cc-pm` may carry a send-back instruction from Aled and must be disambiguated (see *Send-back routing* below).
 
 ## Behaviour
 

@@ -12,7 +12,7 @@ label change to `agent:cc-pm` plus an @cc-pm comment is the gate signal. Runs as
 
 ## Context
 
-- Polls all delivery projects for issues in **In Review** carrying `agent:cc-pm`.
+- Polls all delivery projects for issues in **In Review** carrying `cc-pm` (the `agent`-group leaf — filter by the leaf name, not `agent:cc-pm`; see linear-conventions *Label storage and querying*).
 - The `cc-pm` label on an In Review ticket means: Aled has reviewed the qa-review verdict, is satisfied,
   and has delegated the physical merge. This is the approval signal — do not merge without it.
 - Never touches Pipeline team tickets.
@@ -22,8 +22,8 @@ label change to `agent:cc-pm` plus an @cc-pm comment is the gate signal. Runs as
 
 ## Trigger
 
-Poll all delivery projects for issues in **In Review** carrying `agent:cc-pm`. Skip if none. Note:
-the label is stored as `cc-pm` inside the `agent` group — resolve by that name.
+Poll all delivery projects for issues in **In Review** carrying `cc-pm`. Skip if none. Note:
+`cc-pm` is the leaf name inside the `agent` group — filter by that leaf, never the `agent:cc-pm` display form, which matches nothing (see linear-conventions *Label storage and querying*).
 
 ## Behaviour
 

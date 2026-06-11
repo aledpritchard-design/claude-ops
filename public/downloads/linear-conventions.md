@@ -105,6 +105,17 @@ A typical engineering ticket carries one `type:`, one `work:`, and one `agent:*`
 
 Note: `author:*` (`author:aled`, `author:codex`, etc.) marks who *created* something. The agent execution axis is the `agent` group above. (`author:claude-code` and all `exec:agent:*` labels were retired on 2026-06-02 — `agent:cc-*` now carries Claude Code routing.)
 
+### Label storage and querying — groups vs flat labels
+
+Several axes are Linear **label groups**, and the API stores, filters, and sets a grouped label by its **leaf name only**. The `group:leaf` form shown in the Linear UI (e.g. `agent:cc-exec`, `type:feature`) is **display only** — passing it as a `list_issues` label filter matches **nothing**, and it is *not* the string you pass to set the label either. The `agent:cc-*` / `type:*` forms used in the prose of these skills are read as that human-readable display; every actual API call uses the bare leaf.
+
+* **Grouped axes — use the leaf name in API calls:** `agent` (`cc-exec`, `cc-pm`, `cc-qa`, `human`, `claude`, `codex`, `gpt`, `replit`), `type` (`epic`, `feature`, `story`, `bug`, `triage`), `work` (`engineering` only), `stage`, `warmth`. A scan for cc-exec tickets filters on `cc-exec`, never `agent:cc-exec`.
+* **Flat labels — use the full literal name:** all `work:*` except `engineering` (`work:configuration`, `work:infrastructure`, …), the lone `type:task`, plus `domain:*`, `author:*`, `reporting:*`.
+
+So the executor and routing scans in *exec*, *pm-triage*, *qa-review*, and *pm-merge* all filter on the leaf names `cc-exec` / `cc-pm` / `cc-qa` / `human` — a scan returns the same set a human sees filtering that label in the Linear UI.
+
+**Known divergence (documented as current reality, not yet reconciled).** The `type` and `work` axes are mixed. `type:task` is a *flat* label literally named `type:task`, while its siblings `epic` / `feature` / `story` / `bug` / `triage` are grouped leaves; likewise every `work:*` is flat except `engineering`, which is a grouped leaf under `work`. A scan must therefore use whichever form the specific label actually takes — `feature` but `type:task`; `engineering` but `work:configuration`. Regrouping these for consistency is a separate Linear-data cleanup, not a skills change.
+
 ## Agent routing — the cc-pm / cc-exec / cc-qa loop
 
 Claude Code work runs as a loop across three roles, routed by the single-select `agent` label and driven by polling Cloud Routines. There is no Linear agent app user — `@claude-code` is a label, not a user, so triggering is by label, not by agent session. **Aled is the gate; nothing merges without his approval.**
