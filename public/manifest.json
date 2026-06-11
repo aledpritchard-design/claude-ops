@@ -129,6 +129,17 @@
     "_path": ".claude/skills/linear-conventions/SKILL.md"
   },
   {
+    "name": "operating-model",
+    "type": "skill",
+    "domain": "ops",
+    "status": "done",
+    "gating": "public",
+    "downloadable": true,
+    "summary": "The canonical reference for how Aled's AI operating layer is structured and deployed — what a skill is vs a task vs a…",
+    "composed_of": [],
+    "_path": ".claude/skills/operating-model/SKILL.md"
+  },
+  {
     "name": "ops-retro",
     "type": "skill",
     "domain": "ops",
@@ -151,6 +162,17 @@
     "_path": ".claude/skills/ops-sync/SKILL.md"
   },
   {
+    "name": "pm-coordinate",
+    "type": "skill",
+    "domain": "ops",
+    "status": "done",
+    "gating": "public",
+    "downloadable": true,
+    "summary": "Cross-board PM coordination for Aled's delivery projects",
+    "composed_of": [],
+    "_path": ".claude/skills/pm-coordinate/SKILL.md"
+  },
+  {
     "name": "pm-merge",
     "type": "skill",
     "domain": "ops",
@@ -160,6 +182,17 @@
     "summary": "Merge approved pull requests on behalf of the PM agent",
     "composed_of": [],
     "_path": ".claude/skills/pm-merge/SKILL.md"
+  },
+  {
+    "name": "pm-plan",
+    "type": "skill",
+    "domain": "ops",
+    "status": "done",
+    "gating": "public",
+    "downloadable": true,
+    "summary": "Prioritisation and focus management for Aled's delivery teams",
+    "composed_of": [],
+    "_path": ".claude/skills/pm-plan/SKILL.md"
   },
   {
     "name": "pm-triage",
