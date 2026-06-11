@@ -136,6 +136,33 @@ Concurrency: the exec leg only picks up `agent:cc-exec` tickets in **Todo**, and
 
 Scope: the loop runs across delivery projects only. It must never touch the Pipeline team (Network / Roles / Advisory / Pitches) — that's relationship and business-development work, not delivery.
 
+## Autonomous-loop conventions
+
+These conventions let the Claude Code loop run with Aled in the path only by exception. They govern ticket entry, the human-review signal, and the sign-off gate. pm-triage, cc-exec, qa-review, and pm-merge all read them.
+
+### Default executor label on Backlog entry
+
+A delivery ticket created in Backlog carries `agent:cc-pm` by default, so triage picks it up without Aled hand-labelling. A ticket that is Aled's own — a decision, a human task, something he wants to hold — carries `agent:human` instead and is assigned to him; it is never auto-routed. This default never applies to the Pipeline team; epics carry no agent label.
+
+### The human-gate flag
+
+A ticket's body may carry a single explicit line declaring whether Aled's review is required:
+
+```
+Human gate: required — visual review
+Human gate: required — decision
+Human gate: required — info gap
+Human gate: none
+```
+
+The flag lives in the ticket body (canonical, Pattern A), not in a label. **Absence is permission** — no flag, or `Human gate: none`, means the ticket is safe to flow autonomously. Only an explicit `Human gate: required` pulls Aled in.
+
+**Who sets it:** pm-triage writes the flag during refinement whenever the work needs Aled's visual review, a decision, or carries an info gap it cannot close.
+
+**Who reads it:**
+- **qa-review** auto-approves (sets `agent:cc-pm`) only when the ticket is unflagged and its pass is clean. A flagged ticket is handed to Aled. *(Auto-approval activates once APP-186 — reviewer independence — ships; until then, qa-review assigns Aled as today.)*
+- **pm-merge** is unchanged — it acts only on the `agent:cc-pm` signal, whoever set it.
+
 ## Pattern A — folded validation (the core working discipline)
 
 This is how build/agent work is validated, and it's non-negotiable:
@@ -146,7 +173,7 @@ When an agent finishes a ticket:
 
 1. It checks its work against the criteria embedded in the ticket body.
 2. It moves the ticket to **In Review**. In the Claude Code loop the exec agent leaves the ticket unassigned for cc-qa, which assigns Aled once review is done; a solo agent with no QA leg reassigns Aled itself.
-3. It does **NOT** mark the ticket **Done**. Sign-off is human, always.
+3. It does **NOT** mark the ticket **Done**. Sign-off is human for flagged work (`Human gate: required`); unflagged work in the Claude Code loop is signed off by an independent QA pass. *(Requires APP-186 for auto-approval to be active — until then, qa-review assigns Aled as today.)*
 
 Aled reviews against the embedded criteria and moves it to Done himself. This keeps the human queue showing only actionable work — review is a state transition, not a separate piece of work. When writing a ticket an agent will execute, embed the acceptance criteria in the body so this works.
 
@@ -242,6 +269,7 @@ Aled's tone of voice applies to everything written into Linear: calm, precise, s
 - [ ] Assignee — Aled only where a genuine human action (question, decision, verification) is needed, not as a blanket gate?
 - [ ] Hierarchy and milestone set? (Leaf ticket under the right epic/feature; milestone assigned where the project has them. Epics never carry `agent:cc-exec`.)
 - [ ] For agent tickets: acceptance criteria embedded in the body (Pattern A)?
+- [ ] Human-gate flag set in body? (`Human gate: required — reason` or `Human gate: none` — or absent, which also means none)
 - [ ] Notes section listing open questions, if the brief isn't fully defined?
 - [ ] Consequential decision made? -> decision-log entry added.
 - [ ] Skill/task/agent artefact content? -> edit it in `claude-ops`, not the Linear reference copy.
