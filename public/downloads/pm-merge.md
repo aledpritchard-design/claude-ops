@@ -43,7 +43,7 @@ For each qualifying ticket:
    - **Delete** the claude/-prefixed branch after a successful merge.
    - Move the Linear ticket to **Done**.
    - Evict `agent:cc-pm` (remove the label).
-   - Add a comment: "Merged: PR #[number] squash-merged into main. Branch deleted. ✓"
+   - Add a comment: "✅ Merged: PR #[number] squash-merged into main. Branch deleted."
 
 4. **Unblock dependents.** After a successful merge, query for tickets in **Blocked** that list the just-merged ticket as a blocker. For each:
    - Check whether any other blockers remain unresolved (i.e. not Done).
@@ -56,7 +56,7 @@ For each qualifying ticket:
    - Set priority **Urgent (1)**.
    - Set `agent:human` (evicts `agent:cc-pm`).
    - Assign Aled.
-   - Add a comment @mentioning Aled that lists:
+   - Add a comment leading with ⚠️, @mentioning Aled, that states:
      - Which checks are failing (by name) or that a conflict exists
      - The PR link
      - What is needed to unblock
