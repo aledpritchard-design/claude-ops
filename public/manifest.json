@@ -173,6 +173,17 @@
     "_path": ".claude/skills/ops-sync/SKILL.md"
   },
   {
+    "name": "optimisation-review",
+    "type": "skill",
+    "domain": "ops",
+    "status": "done",
+    "gating": "public",
+    "downloadable": true,
+    "summary": "Weekly review skill that audits how Aled's tooling is used and how workflows are shaped, then raises improvement prop…",
+    "composed_of": [],
+    "_path": ".claude/skills/optimisation-review/SKILL.md"
+  },
+  {
     "name": "pm-coordinate",
     "type": "skill",
     "domain": "ops",
