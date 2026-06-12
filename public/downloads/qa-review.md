@@ -37,7 +37,8 @@ Working from the isolated inputs above, assess the change against each acceptanc
 
 1. **Post the verdict comment on the Linear ticket** (so it's in the canonical record). Begin the comment with `[qa-review] HEAD: <sha7>`.
 2. **Post the same verdict comment on the GitHub PR** (so it's visible where Aled reviews and approves). Begin the comment with `[qa-review] HEAD: <sha7>`.
-3. **If the PR is a draft, mark it as Ready for Review** — draft signals WIP; a clean QA pass signals it's awaiting human sign-off. Skip this step if the PR is already non-draft.
+
+Do not convert draft PRs to ready for review — leave the draft state unchanged. The verdict comment is the handoff signal; the draft → ready transition belongs to pm-merge, to avoid triggering Linear's GitHub automation prematurely.
 
 **Notes for Aled — check the thread before flagging open.** Before writing the verdict, for any ticket whose body carries a *Notes for Aled to address* section (or any equivalent open-questions block): scan the **full comment thread** (`orderBy: createdAt`, sufficient limit — see linear-conventions *Comment ordering gotcha*) for Aled's answers or pm-triage notes that record his decision. A note is unresolved **only** if no later comment answers it. Do not flag it as open if Aled already answered it in thread. When a note is answered, the verdict states the decision was resolved (citing the answering comment) rather than asking Aled to re-confirm.
 
@@ -64,11 +65,12 @@ Working from the isolated inputs above, assess the change against each acceptanc
 - Does not merge, does not change the ticket's **state** (stays In Review). At handoff it sets two things: **assignee → Aled** and **label → `human`** (evicts `cc-qa`). Switching to `cc-pm` is Aled's approval action, not QA's. It reviews, reports, and hands to Aled; Aled decides.
 - Approve and merge are Aled's: his `@cc-pm` signal (evicts `human`) triggers the pm-merge leg. Bounce is Aled's: In Review → Todo with a note, and he sets `cc-exec` so exec re-picks the ticket.
 - A QA pass is not assurance — it makes the change legible, it does not sign it off. Sign-off is human (Pattern A).
+- **Optional belt-and-braces:** once the independence rules (isolated inputs, adversarial framing, evidence-based checks) are in place, a second pass using a *different model* on the same isolated inputs can catch model-specific blind spots. This is a marginal add-on, not a substitute for the independence rules, and is not currently required.
 
 ## Setup
 
 - Claude Code Desktop -> Schedule -> New remote task.
-- Connectors: Linear + GitHub (read + write access to the PR for comments and draft conversion).
+- Connectors: Linear + GitHub (read + write access to the PR for comments).
 - Routine prompt: "Run the qa-review skill."
 - Load MCP tool schemas via ToolSearch before starting: `select:mcp__Linear__list_issues,mcp__Linear__list_comments,mcp__Linear__list_issue_labels,mcp__Linear__save_comment,mcp__Linear__save_issue` and `select:mcp__github__list_pull_requests,mcp__github__pull_request_read,mcp__github__add_issue_comment`.
 

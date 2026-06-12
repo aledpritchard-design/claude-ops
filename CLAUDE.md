@@ -17,6 +17,7 @@ Skills live in `.claude/skills/`. Claude Code discovers and loads them automatic
 | `ops-sync` | Artefact parity audit: keeps skills and tasks in sync between Claude (deployed) and this repo (canon). Repo wins; flags uncommitted Claude-side artefacts for Aled. Deployed as a Cowork scheduled task. |
 | `operating-model` | Contextual reference: what a skill / task / routine / agent is, how they bundle, the loop topology, and the skill-or-task decision test. Read-only canon — no trigger or behaviour loop. |
 | `pm-plan` | Prioritisation and focus: reads goal-initiatives and ticket state across delivery teams, separates important from urgent, makes autonomous hygiene writes (fix/minor level), surfaces major proposals for Aled. Runs ~weekly on the Linear connector. Never marks Done, never writes code, never touches Pipeline. |
+| `optimisation-review` | Weekly review skill with two passes — tooling (are we using Claude, Linear, GitHub, Vercel, Sanity well?) and workflow (does the operating shape match the skill-vs-task test?). Raises proposals into os.Claude Backlog. Read-only to canon; human-gated. |
 
 ## Source of truth
 
