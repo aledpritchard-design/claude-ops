@@ -15,13 +15,13 @@ Before reviewing, check whether a verdict already exists for the current PR head
 3. **If a match is found:** skip silently — no comment, no state change. The verdict already exists; Aled's gate is the next action.
 4. **If no match:** proceed with the full review below.
 
-Every verdict comment **must** begin with:
+Every verdict comment **must** begin with the header line:
 
 ```
-[qa-review] HEAD: <sha7>
+[qa-review] HEAD: <sha7> — ✅ PASS | ❌ CHANGES NEEDED | ⚠️ PASS WITH FLAGS
 ```
 
-where `<sha7>` is the first 7 characters of the PR head commit SHA. This line is the dedup key.
+where `<sha7>` is the first 7 characters of the PR head commit SHA, and the status is exactly one of the three strings shown. The full header line is the dedup key.
 
 ## Reviewer independence
 
@@ -37,16 +37,26 @@ Working from the isolated inputs above, assess the change against each acceptanc
 
 1. **Post the verdict comment on the Linear ticket** (so it's in the canonical record). Begin the comment with `[qa-review] HEAD: <sha7>`.
 2. **Post the same verdict comment on the GitHub PR** (so it's visible where Aled reviews and approves). Begin the comment with `[qa-review] HEAD: <sha7>`.
-3. **If the PR is a draft, mark it as Ready for Review** — draft signals WIP; a clean QA pass signals it's awaiting human sign-off. Skip this step if the PR is already non-draft.
+
+Do not convert draft PRs to ready for review — leave the draft state unchanged. The verdict comment is the handoff signal; the draft → ready transition belongs to pm-merge, to avoid triggering Linear's GitHub automation prematurely.
 
 **Notes for Aled — check the thread before flagging open.** Before writing the verdict, for any ticket whose body carries a *Notes for Aled to address* section (or any equivalent open-questions block): scan the **full comment thread** (`orderBy: createdAt`, sufficient limit — see linear-conventions *Comment ordering gotcha*) for Aled's answers or pm-triage notes that record his decision. A note is unresolved **only** if no later comment answers it. Do not flag it as open if Aled already answered it in thread. When a note is answered, the verdict states the decision was resolved (citing the answering comment) rather than asking Aled to re-confirm.
 
-Verdict comes in one of two modes:
+**Verdict structure.** Every verdict follows this template:
 
-- **Clean** — a summary of what was done plus explicit confirmation it meets the DoD / success criteria. Enough for Aled to approve.
-- **Changes needed** — log everything the exec agent needs to act on: specific, actionable, with file/line where it helps, so a bounce is self-contained. Do not mark the PR ready for review if changes are needed.
+```
+[qa-review] HEAD: <sha7> — [STATUS]
 
-Plain language throughout — Aled acts on it without reading the code.
+[One-line summary]
+
+**Criteria**
+✅ / ❌ / ⚠️ [One line per acceptance criterion — ❌ lines state what failed and what is needed; ⚠️ lines flag caveats or coverage gaps]
+
+**For Aled** *(omit when verdict is self-contained)*
+1. [Step or decision, plain language — consequences of each option stated non-technically]
+```
+
+`[STATUS]` is exactly one of: `✅ PASS`, `❌ CHANGES NEEDED`, or `⚠️ PASS WITH FLAGS`. The **For Aled** section appears only when Aled must act (a decision, gate, or steps to complete) — omit it on a clean, no-flags pass. When changes are needed, every ❌ criterion must be specific and actionable (file/line where it helps) so a bounce is self-contained. Plain language throughout — Aled acts on it without reading the code.
 
 **Hand off to Aled.** Once the verdict is posted (either mode), assign the ticket to **Aled** and set the label to `human` (single-select agent group evicts `cc-qa`); state stays **In Review**. Do **not** switch the label to `cc-pm` — that is Aled's approval action, not QA's. Aled's gate actions from here: a bounce (In Review → Todo) means he also sets `cc-exec` so exec re-picks the ticket; an approval means he sets `cc-pm` and signals `@cc-pm`, which triggers pm-merge. The exec leg left the ticket unassigned; qa-review is where the assignee becomes Aled, so "assigned to Aled" reliably means his decision is needed now. Where a bounce is automated (a future driver routine), the automating skill sets `cc-exec` itself — no ticket is ever left in Todo carrying `human` by an automated path.
 
@@ -55,11 +65,12 @@ Plain language throughout — Aled acts on it without reading the code.
 - Does not merge, does not change the ticket's **state** (stays In Review). At handoff it sets two things: **assignee → Aled** and **label → `human`** (evicts `cc-qa`). Switching to `cc-pm` is Aled's approval action, not QA's. It reviews, reports, and hands to Aled; Aled decides.
 - Approve and merge are Aled's: his `@cc-pm` signal (evicts `human`) triggers the pm-merge leg. Bounce is Aled's: In Review → Todo with a note, and he sets `cc-exec` so exec re-picks the ticket.
 - A QA pass is not assurance — it makes the change legible, it does not sign it off. Sign-off is human (Pattern A).
+- **Optional belt-and-braces:** once the independence rules (isolated inputs, adversarial framing, evidence-based checks) are in place, a second pass using a *different model* on the same isolated inputs can catch model-specific blind spots. This is a marginal add-on, not a substitute for the independence rules, and is not currently required.
 
 ## Setup
 
 - Claude Code Desktop -> Schedule -> New remote task.
-- Connectors: Linear + GitHub (read + write access to the PR for comments and draft conversion).
+- Connectors: Linear + GitHub (read + write access to the PR for comments).
 - Routine prompt: "Run the qa-review skill."
 - Load MCP tool schemas via ToolSearch before starting: `select:mcp__Linear__list_issues,mcp__Linear__list_comments,mcp__Linear__list_issue_labels,mcp__Linear__save_comment,mcp__Linear__save_issue` and `select:mcp__github__list_pull_requests,mcp__github__pull_request_read,mcp__github__add_issue_comment`.
 

@@ -96,6 +96,17 @@
     "_path": ".claude/skills/cos-truth-capture/SKILL.md"
   },
   {
+    "name": "delivery-loop",
+    "type": "skill",
+    "domain": "ops",
+    "status": "done",
+    "gating": "public",
+    "downloadable": true,
+    "summary": "Driver routine for the full Claude Code delivery loop",
+    "composed_of": [],
+    "_path": ".claude/skills/delivery-loop/SKILL.md"
+  },
+  {
     "name": "exec",
     "type": "skill",
     "domain": "ops",
@@ -171,6 +182,17 @@
     "summary": "Keep skill and task artefacts in parity between Claude (deployed copies) and the claude-ops repo (canon), so the agen…",
     "composed_of": [],
     "_path": ".claude/skills/ops-sync/SKILL.md"
+  },
+  {
+    "name": "optimisation-review",
+    "type": "skill",
+    "domain": "ops",
+    "status": "done",
+    "gating": "public",
+    "downloadable": true,
+    "summary": "Weekly review skill that audits how Aled's tooling is used and how workflows are shaped, then raises improvement prop…",
+    "composed_of": [],
+    "_path": ".claude/skills/optimisation-review/SKILL.md"
   },
   {
     "name": "pm-coordinate",

@@ -280,6 +280,25 @@ This is a workaround for an MCP limitation (Linear MCP has no field-projection p
 
 Aled's tone of voice applies to everything written into Linear: calm, precise, structurally confident. Sentence case. No exclamation marks. No marketing-speak. Outcome before adjective. British spelling. (Full reference: `cos.tov`.)
 
+## Comment voice — agents vs Aled
+
+Comments in the Claude Code loop serve two distinct audiences. Write for the reader, not yourself.
+
+**Agent-addressed comments** (handoffs, locks, audit trail, dedup keys) — structured and dense:
+- Exact identifiers: ticket IDs, PR numbers, commit SHAs, label names as they appear in the API.
+- No prose padding. Machine-readable where possible.
+- Examples: exec's handoff comment (`PR ready: #57`), qa-review's `[qa-review] HEAD: <sha7>` dedup key, pm-merge's merge confirmation.
+
+**Aled-addressed comments** (assignments, gates, blockers, decisions, bounces) — clear and direct:
+- Lead with the specific ask — what Aled must do or decide, in the first sentence.
+- Explain consequences in non-technical terms — outcomes, not implementation details.
+- When he has steps to complete, list each step explicitly and numbered.
+- @mention him (`@aledpritchard`) whenever he is the action owner.
+
+**Status emoji** — wherever a pass/fail outcome is reported: ✅ = success/merged/pass, ❌ = failure/changes needed, ⚠️ = blocked/flagged/caution. Lead Blocked-path comments with ⚠️ or ❌.
+
+All agent skills inherit this. exec, pm-triage, pm-merge, and qa-review embody it; they don't re-state it.
+
 ## Quick checklist before creating or updating anything
 
 - [ ] Right team and project? (Pipeline for people/opportunities; A1 for the consultancy; Mr Pritchard for editorial; careerOS for the system; Apps for builds.)
