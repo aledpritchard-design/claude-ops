@@ -63,13 +63,20 @@ Do not convert draft PRs to ready for review — leave the draft state unchanged
 
 `[STATUS]` is exactly one of: `✅ PASS`, `❌ CHANGES NEEDED`, or `⚠️ PASS WITH FLAGS`. The **For Aled** section appears only when Aled must act (a decision, gate, or steps to complete) — omit it on a clean, no-flags pass. When changes are needed, every ❌ criterion must be specific and actionable (file/line where it helps) so a bounce is self-contained. Plain language throughout — Aled acts on it without reading the code.
 
-**Hand off to Aled.** Once the verdict is posted (either mode), assign the ticket to **Aled** and set the label to `human` (single-select agent group evicts `cc-qa`); state stays **In Review**. Do **not** switch the label to `cc-pm` — that is Aled's approval action, not QA's. Aled's gate actions from here: a bounce (In Review → Todo) means he also sets `cc-exec` so exec re-picks the ticket; an approval means he sets `cc-pm` and signals `@cc-pm`, which triggers pm-merge. The exec leg left the ticket unassigned; qa-review is where the assignee becomes Aled, so "assigned to Aled" reliably means his decision is needed now. Where a bounce is automated (a future driver routine), the automating skill sets `cc-exec` itself — no ticket is ever left in Todo carrying `human` by an automated path.
+**Routing after verdict.** Once the verdict is posted, route the ticket based on the ticket's human-gate flag and the verdict outcome. Read the flag from the ticket body (a single explicit line: `Human gate: required — <reason>`, `Human gate: none`, or absent — absence means none).
+
+- **Auto-approve (unflagged + clean pass).** Set label `cc-pm` (evicts `cc-qa`), keep state In Review, leave the assignee clear. pm-merge picks up the ticket on the `cc-pm` signal. Do not assign Aled.
+- **Gate to Aled (flagged + clean pass).** Assign Aled, set label `human` (evicts `cc-qa`), keep state In Review. Lead the verdict with exactly what he needs to look at — the flagged item first, then the rest of the summary. Aled's gate actions: bounce (In Review → Todo, he sets `cc-exec`) or approve (he sets `cc-pm` and signals `@cc-pm`).
+- **Block (info or fix only Aled can provide).** Move to **Blocked**, set label `human` (evicts `cc-qa`), assign Aled, and `@aledpritchard` in the comment with exactly what is needed. Distinct from a changes-needed bounce: block only when QA cannot proceed without Aled's direct input or action; a failing check that exec can fix goes back through the exec bounce.
+- **Changes needed (any flag state).** Log everything the exec agent needs to act on, do not mark the PR ready. Assign Aled, set label `human` (evicts `cc-qa`), keep state In Review. Aled's gate actions are the same as the flagged-clean path. QA never auto-approves a failing pass, flag or no flag — the flag only governs clean passes.
+
+The exec leg left the ticket unassigned; qa-review is where the assignee becomes Aled (except on the auto-approve path), so "assigned to Aled" reliably means his decision is needed now. Where a bounce is automated (a future driver routine), the automating skill sets `cc-exec` itself — no ticket is ever left in Todo carrying `human` by an automated path.
 
 ## Guardrails
 
-- Does not merge, does not change the ticket's **state** (stays In Review). At handoff it sets two things: **assignee → Aled** and **label → `human`** (evicts `cc-qa`). Switching to `cc-pm` is Aled's approval action, not QA's. It reviews, reports, and hands to Aled; Aled decides.
-- Approve and merge are Aled's: his `@cc-pm` signal (evicts `human`) triggers the pm-merge leg. Bounce is Aled's: In Review → Todo with a note, and he sets `cc-exec` so exec re-picks the ticket.
-- A QA pass is not assurance — it makes the change legible, it does not sign it off. Sign-off is human (Pattern A).
+- Does not merge. On the auto-approve path it sets `cc-pm` and keeps state In Review with no assignee — pm-merge takes it from there. On all other paths it sets `human`, assigns Aled, and keeps state In Review (or Blocked on the block path). Switching to `cc-pm` is the auto-approve path and Aled's own approval action; never the changes-needed or gate-to-Aled path.
+- Approve and merge (non-auto path): Aled's `@cc-pm` signal (evicts `human`) triggers pm-merge. Bounce is Aled's: In Review → Todo with a note, and he sets `cc-exec` so exec re-picks the ticket.
+- Sign-off is human for flagged work; unflagged work in the Claude Code loop is signed off by an independent QA pass (Pattern A, amended per APP-188).
 - **Optional belt-and-braces:** once the independence rules (isolated inputs, adversarial framing, evidence-based checks) are in place, a second pass using a *different model* on the same isolated inputs can catch model-specific blind spots. This is a marginal add-on, not a substitute for the independence rules, and is not currently required.
 
 ## Setup
