@@ -37,7 +37,8 @@ Working from the isolated inputs above, assess the change against each acceptanc
 
 1. **Post the verdict comment on the Linear ticket** (so it's in the canonical record). Begin the comment with `[qa-review] HEAD: <sha7>`.
 2. **Post the same verdict comment on the GitHub PR** (so it's visible where Aled reviews and approves). Begin the comment with `[qa-review] HEAD: <sha7>`.
-3. **If the PR is a draft, mark it as Ready for Review** — draft signals WIP; a clean QA pass signals it's awaiting human sign-off. Skip this step if the PR is already non-draft.
+
+Do not convert draft PRs to ready for review — leave the draft state unchanged. The verdict comment is the handoff signal; the draft → ready transition belongs to pm-merge, to avoid triggering Linear's GitHub automation prematurely.
 
 **Notes for Aled — check the thread before flagging open.** Before writing the verdict, for any ticket whose body carries a *Notes for Aled to address* section (or any equivalent open-questions block): scan the **full comment thread** (`orderBy: createdAt`, sufficient limit — see linear-conventions *Comment ordering gotcha*) for Aled's answers or pm-triage notes that record his decision. A note is unresolved **only** if no later comment answers it. Do not flag it as open if Aled already answered it in thread. When a note is answered, the verdict states the decision was resolved (citing the answering comment) rather than asking Aled to re-confirm.
 
@@ -59,7 +60,7 @@ Plain language throughout — Aled acts on it without reading the code.
 ## Setup
 
 - Claude Code Desktop -> Schedule -> New remote task.
-- Connectors: Linear + GitHub (read + write access to the PR for comments and draft conversion).
+- Connectors: Linear + GitHub (read + write access to the PR for comments).
 - Routine prompt: "Run the qa-review skill."
 - Load MCP tool schemas via ToolSearch before starting: `select:mcp__Linear__list_issues,mcp__Linear__list_comments,mcp__Linear__list_issue_labels,mcp__Linear__save_comment,mcp__Linear__save_issue` and `select:mcp__github__list_pull_requests,mcp__github__pull_request_read,mcp__github__add_issue_comment`.
 
