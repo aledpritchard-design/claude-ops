@@ -194,6 +194,8 @@ Aled reviews against the embedded criteria and moves it to Done himself. This ke
 - [human-verify] Decision log entry written in osclaude.log-decisions (Linear doc)
 ```
 
+**Bounce-scope narrowing.** When Aled bounces a ticket after Done (Done → Todo with a note), narrow the acceptance criteria in the body to reflect the current bounce scope before exec re-picks it. Either replace the original criteria with the specific bounce item, or add a `Current bounce: [specific item]` line above the checklist to supersede the broader criteria for this iteration. This prevents QA from having to infer scope from the PR title.
+
 ## Structure: hierarchy, milestones, blocks
 
 Three orthogonal axes carry how work is organised. Keep them distinct — conflating them is what makes the board hard to read.
