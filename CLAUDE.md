@@ -11,7 +11,7 @@ Skills live in `.claude/skills/`. Claude Code discovers and loads them automatic
 | `linear-conventions` | Workspace conventions for all Linear work (teams, states, labels, routing, Pattern A). Read before creating or updating anything in Linear. |
 | `exec` | cc-exec: claim a Todo ticket, implement it, open a PR on a `claude/` branch, hand to cc-qa. Never merges. |
 | `qa-review` | cc-qa: read the PR against the ticket's embedded criteria, post a plain-language verdict for Aled. Never advances the ticket. |
-| `pm-triage` | cc-pm: triage Backlog tickets and route Todo tickets. Currently deployed as a Cowork task; included here for reference and future use. |
+| `pm-triage` | cc-pm (intake leg): shapes new Backlog cc-pm tickets to standard and moves them to Refinement. Refinement sweeps, send-back routing, and Blocked hygiene belong to pm-coordinate. |
 | `pm-coordinate` | cc-pm (coordination leg): sweeps all delivery projects for new comments, applies decisions, advances handoffs, auto-unblocks cleared dependencies, surfaces structural proposals. Never merges or marks Done. |
 | `pm-merge` | cc-pm (merge leg): squash-merges approved PRs, deletes branches, marks Done. Gated by Aled's cc-pm approval signal. |
 | `ops-sync` | Artefact parity audit: keeps skills and tasks in sync between Claude (deployed) and this repo (canon). Repo wins; flags uncommitted Claude-side artefacts for Aled. Deployed as a Cowork scheduled task. |
