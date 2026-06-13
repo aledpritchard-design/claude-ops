@@ -234,7 +234,7 @@
     "status": "done",
     "gating": "public",
     "downloadable": true,
-    "summary": "Triage and project-manage Linear tickets in Aled's delivery projects on behalf of the Claude Code PM role",
+    "summary": "Intake of new Backlog cc-pm tickets in Aled's delivery projects",
     "composed_of": [],
     "_path": ".claude/skills/pm-triage/SKILL.md"
   },
