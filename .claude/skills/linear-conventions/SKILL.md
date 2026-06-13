@@ -98,7 +98,7 @@ Every ticket should carry the labels that classify it. The taxonomy:
 
 **Executor** (who does it): one label from the `agent` group (single-select).
 
-* `agent` **group (single-select)** — which agent owns the work. The former `exec:agent:*`, `author:claude-code`, and human-executor labels were retired (2026-06-02–2026-06-10) and folded into this one group:
+* `agent` **group (single-select)** — which agent owns the work. The former `exec:agent:*` and `author:claude-code` labels were retired (2026-06-02); `exec:human` was retired (2026-06-10) — all folded into this one group:
   * `agent:cc-pm`, `agent:cc-exec`, `agent:cc-qa` — the three Claude Code roles in the PM -> exec -> QA loop (see *Agent routing* below)
   * `agent:human` — decisions, design, launch ops, anything human-owned. Also set by exec and pm-merge on the Blocked/CI-fail path (evicts the active agent label)
   * `agent:claude` — claude.ai work that needs an MCP the CLI lacks (e.g. Figma)
@@ -141,7 +141,7 @@ Claude Code work runs as a loop across three roles, routed by the single-select 
 
 With the ticket assigned to him and still at `agent:cc-qa`, Aled either raises follow-ups (a bounce — **In Review -> Todo with a note** re-triggers the exec agent on the same ticket) or approves by **setting `agent:cc-pm` and giving his `@cc-pm` signal**, which triggers the pm-merge leg. This is Pattern A (below) with a QA write-up and an explicit approval gate added — review stays a state transition Aled owns, not a separate ticket.
 
-**Send-back and disambiguation.** When a delivery ticket fails late (qa-review "changes needed" or pm-merge CI failure), it lands on Aled with `agent:human`. Aled's decision to retry is gated: he sets `agent:cc-pm` on the ticket with a send-back comment. Because `agent:cc-pm` on an In Review ticket carries two meanings — **"approve and merge"** (→ pm-merge) and **"send back to exec"** (→ pm-coordinate) — the pm leg reads Aled's comment intent to disambiguate. On a send-back, pm-coordinate relabels `agent:cc-exec`, moves the ticket to **Todo**, ensures the fix instructions are in the body or most recent comment, and clears the assignee. No keyword required; the intent in the comment text is the signal. Because Aled is in the loop on every failure, no automatic exec⇔qa loop is introduced.
+**Send-back and disambiguation.** When a delivery ticket fails late (qa-review "changes needed" or pm-merge CI failure), it lands on Aled with `agent:human`. Aled's decision to retry is gated: he sets `agent:cc-pm` on the ticket with a send-back comment. Because `agent:cc-pm` on an In Review ticket carries two meanings — **"approve and merge"** (→ pm-merge) and **"send back to exec"** (→ pm-coordinate) — the pm leg reads Aled's comment intent to disambiguate. On a send-back, pm-coordinate relabels `agent:cc-exec`, moves the ticket to **Todo**, ensures the fix instructions are in the body or most recent comment, and clears the assignee. No keyword required; the intent in the comment text is the signal. Because Aled is in the loop on every failure, no automatic exec↔qa loop is introduced.
 
 Concurrency: the exec leg only picks up `agent:cc-exec` tickets in **Todo**, and skips its run if any `agent:cc-exec` ticket is already In Progress (one Claude Code agent per repo). Todo = ready, In Progress = running. No separate lock label is required.
 
@@ -194,6 +194,8 @@ Aled reviews against the embedded criteria and moves it to Done himself. This ke
 - [human-verify] Decision log entry written in osclaude.log-decisions (Linear doc)
 ```
 
+**Bounce-scope narrowing.** When Aled bounces a ticket after Done (Done → Todo with a note), narrow the acceptance criteria in the body to reflect the current bounce scope before exec re-picks it. Either replace the original criteria with the specific bounce item, or add a `Current bounce: [specific item]` line above the checklist to supersede the broader criteria for this iteration. This prevents QA from having to infer scope from the PR title.
+
 ## Structure: hierarchy, milestones, blocks
 
 Three orthogonal axes carry how work is organised. Keep them distinct — conflating them is what makes the board hard to read.
@@ -224,7 +226,7 @@ A ticket that mixes executor types or requires more than one human gate at diffe
 
 **The two rules (new tickets only — no retroactive sweep of open mixed tickets):**
 
-1. **Split human-owned setup from agent implementation.** A discrete human-owned prerequisite (account creation, credential provisioning, a design or launch decision) becomes its own `agent:human` ticket, marked as blocking the implementation ticket.
+1. **Split human-owned setup from agent implementation.** A discrete human-owned prerequisite (account creation, credential provisioning, a design or launch decision) becomes its own `exec:human` ticket, marked as blocking the implementation ticket.
 2. **One human gate per ticket.** If a ticket needs more than one human gate at different stages (provision-then-build, or build-then-approve-a-production-migration), split so each ticket has a single gate. A production data migration in particular gets its own ticket.
 
 **Trivial-enough threshold — leave bundled only when all three hold:**
