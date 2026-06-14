@@ -48,6 +48,8 @@ When refining a Backlog ticket, structure it before polishing its content:
 
 A checklist that names only one location will produce a one-file exec output and a QA bounce. See operating-model *How they bundle* for the canonical reference.
 
+**Coordination-note → blocked-by (baseline check).** When refining a ticket, scan the body for coordination prose — patterns such as "coordinate with X — both touch `file`", "sequence them", "runs after [ticket]", or similar. For each ticket named in such a pattern, look up whether it is currently in flight (Todo → In Review). If so, add a `blockedBy` relation on the ticket being refined, pointing at the in-flight named ticket, and note the addition in the refinement comment. Two constraints: (1) only where the dependency is genuine — the shared file would produce a real conflict that cannot be parallelised on separate branches; thematic or strategic sequencing is never converted to a block. (2) Autonomous: add the relation directly without proposing first (Aled approved autonomous action, 2026-06-10). Extends — does not duplicate — *Repo-wide baseline tickets* in Guardrails.
+
 ## Guardrails
 
 - Scope: Backlog cc-pm tickets only. Never touches In Progress, In Review, Refinement, Todo, or Blocked tickets — those are pm-coordinate's domain.
