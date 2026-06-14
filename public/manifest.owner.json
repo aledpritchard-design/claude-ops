@@ -96,6 +96,17 @@
     "_path": ".claude/skills/cos-truth-capture/SKILL.md"
   },
   {
+    "name": "daily-report",
+    "type": "skill",
+    "domain": "ops",
+    "status": "done",
+    "gating": "public",
+    "downloadable": true,
+    "summary": "Write Aled's morning brief on the Claude Code work loop by reading Linear — read-only, changes nothing",
+    "composed_of": [],
+    "_path": ".claude/skills/daily-report/SKILL.md"
+  },
+  {
     "name": "delivery-loop",
     "type": "skill",
     "domain": "ops",
@@ -193,6 +204,28 @@
     "summary": "Weekly review skill that audits how Aled's tooling is used and how workflows are shaped, then raises improvement prop…",
     "composed_of": [],
     "_path": ".claude/skills/optimisation-review/SKILL.md"
+  },
+  {
+    "name": "pipeline-qualify",
+    "type": "skill",
+    "domain": "ops",
+    "status": "done",
+    "gating": "public",
+    "downloadable": true,
+    "summary": "Qualify Pipeline tickets from Backlog to Ready on behalf of the PM role",
+    "composed_of": [],
+    "_path": ".claude/skills/pipeline-qualify/SKILL.md"
+  },
+  {
+    "name": "pipeline-sweep",
+    "type": "skill",
+    "domain": "ops",
+    "status": "done",
+    "gating": "public",
+    "downloadable": true,
+    "summary": "Run a scheduled Gmail-to-Linear sweep that captures inbound pipeline mail into Aled's Pipeline team — people into Net…",
+    "composed_of": [],
+    "_path": ".claude/skills/pipeline-sweep/SKILL.md"
   },
   {
     "name": "pm-coordinate",
